@@ -1,0 +1,19 @@
+<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    /* Same look for default + clicked states */
+    .uniform, .uniform *,
+    .uniform:active, .uniform *:active {
+      stroke: gray;
+      stroke-width: 1.56;
+      fill: none;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <g class="uniform">
+    <rect x="1" y="1" width="8.9998" height="7.19984" rx="2.08"/>
+    <rect x="10" y="11.8008" width="8.9998" height="7.19984" rx="2.08"/>
+    <path d="M17.5728 2.80078L18.7364 3.96436C19.0879 4.31582 19.0879 4.88566 18.7364 5.23712L17.5728 6.4007M13.6001 4.60074L18.4728 4.60074"/>
+    <path d="M2.42718 13.5996L1.2636 14.7632C0.912134 15.1147 0.912134 15.6845 1.2636 16.036L2.42718 17.1995M6.39988 15.3996L1.5272 15.3996"/>
+  </g>
+</svg>

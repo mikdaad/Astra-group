@@ -1,0 +1,425 @@
+{
+	"info": {
+		"_postman_id": "akshayapatra-auth-api",
+		"name": "Akshayapatra Authentication API",
+		"description": "Collection for testing the Akshayapatra Authentication API endpoints including email/password, phone/OTP, and Google OAuth authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "akshayapatra-auth-api"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"securepassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						},
+						"description": "Register a new user with email and password"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"securepassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticate user with email and password"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logout the current user"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm Email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/confirm?token_hash={{tokenHash}}&type=signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"confirm"
+							],
+							"query": [
+								{
+									"key": "token_hash",
+									"value": "{{tokenHash}}"
+								},
+								{
+									"key": "type",
+									"value": "signup"
+								}
+							]
+						},
+						"description": "Confirm email address using token from confirmation email"
+					},
+					"response": []
+				}
+			],
+			"description": "User authentication operations"
+		},
+		{
+			"name": "Password Management",
+			"item": [
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/forgot-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						},
+						"description": "Request password reset email"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"newsecurepassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"reset-password"
+							]
+						},
+						"description": "Reset user password using reset token"
+					},
+					"response": []
+				}
+			],
+			"description": "Password reset and recovery operations"
+		},
+		{
+			"name": "Google OAuth",
+			"item": [
+				{
+					"name": "Initiate Google OAuth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mode\": \"login\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/google",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"google"
+							]
+						},
+						"description": "Initiate Google OAuth authentication flow"
+					},
+					"response": []
+				},
+				{
+					"name": "OAuth Callback",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/callback?code={{authCode}}&next=/dashboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"callback"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "{{authCode}}"
+								},
+								{
+									"key": "next",
+									"value": "/dashboard"
+								}
+							]
+						},
+						"description": "Handle OAuth callback from Google"
+					},
+					"response": []
+				}
+			],
+			"description": "Google OAuth authentication operations"
+		},
+		{
+			"name": "Phone Authentication",
+			"item": [
+				{
+					"name": "Send Login OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phoneNumber\": \"+911234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/phone/send-otp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"phone",
+								"send-otp"
+							]
+						},
+						"description": "Send OTP for phone login"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Login OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phoneNumber\": \"+911234567890\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/phone/verify-otp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"phone",
+								"verify-otp"
+							]
+						},
+						"description": "Verify OTP and login user"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Signup OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phoneNumber\": \"+911234567890\",\n  \"fullName\": \"John Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/phone/send-signup-otp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"phone",
+								"send-signup-otp"
+							]
+						},
+						"description": "Send OTP for phone signup"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Signup OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phoneNumber\": \"+911234567890\",\n  \"fullName\": \"John Doe\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/phone/verify-signup-otp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"phone",
+								"verify-signup-otp"
+							]
+						},
+						"description": "Verify OTP and create user account"
+					},
+					"response": []
+				}
+			],
+			"description": "Phone/SMS OTP authentication operations"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "tokenHash",
+			"value": "your-token-hash-here",
+			"type": "string"
+		},
+		{
+			"key": "authCode",
+			"value": "your-oauth-code-here",
+			"type": "string"
+		},
+		{
+			"key": "phoneNumber",
+			"value": "+911234567890",
+			"type": "string"
+		},
+		{
+			"key": "otp",
+			"value": "123456",
+			"type": "string"
+		}
+	]
+} 

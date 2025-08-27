@@ -1,0 +1,1064 @@
+{
+  "info": {
+    "name": "Akshayapatra Admin API",
+    "description": "Comprehensive collection for testing Akshayapatra Admin API endpoints. AUTHENTICATION DISABLED FOR TESTING - No auth headers required.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "admin-api-collection-id",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "patch": 0
+    }
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string",
+      "description": "Base URL for API requests"
+    },
+    {
+      "key": "authToken",
+      "value": "NOT_REQUIRED_FOR_TESTING",
+      "type": "string",
+      "description": "Authentication disabled for testing - APIs use service key internally"
+    }
+  ],
+  "_auth_disabled_for_testing": {
+    "note": "Authentication is disabled for testing - APIs use service key internally",
+    "auth_type_when_enabled": "bearer",
+    "bearer_token_variable": "{{authToken}}"
+  },
+  "item": [
+    {
+      "name": "Dashboard",
+      "description": "Dashboard analytics and overview endpoints",
+      "item": [
+        {
+          "name": "Get Dashboard Overview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/dashboard?period=month",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "dashboard"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "month",
+                  "description": "Time period: day, week, month, year"
+                }
+              ]
+            },
+            "description": "Retrieve comprehensive dashboard statistics and metrics"
+          }
+        },
+        {
+          "name": "Quick Search",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"john\",\n  \"searchType\": \"users\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "dashboard"]
+            },
+            "description": "Search across users, cards, and transactions"
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "description": "User administration and management endpoints",
+      "item": [
+        {
+          "name": "Get Users List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users?page=1&limit=10&search=&status=&kyc_verified=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page (max 100)"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search in name, phone, email"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filter by status: active, inactive, suspended"
+                },
+                {
+                  "key": "kyc_verified",
+                  "value": "",
+                  "description": "Filter by KYC status: true, false"
+                },
+                {
+                  "key": "role",
+                  "value": "",
+                  "description": "Filter by role name"
+                },
+                {
+                  "key": "date_from",
+                  "value": "",
+                  "description": "Filter by creation date (from)"
+                },
+                {
+                  "key": "date_to",
+                  "value": "",
+                  "description": "Filter by creation date (to)"
+                }
+              ]
+            },
+            "description": "Retrieve paginated list of users with filtering and search"
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"John Doe\",\n  \"phone_number\": \"+1234567890\",\n  \"country\": \"India\",\n  \"state\": \"Karnataka\",\n  \"district\": \"Bangalore\",\n  \"role_name\": \"support\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users"]
+            },
+            "description": "Create a new user account (Admin only)"
+          }
+        },
+        {
+          "name": "Get User Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users", "{{userId}}"]
+            },
+            "description": "Retrieve detailed user information"
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"John Smith\",\n  \"phone_number\": \"+1234567890\",\n  \"is_active\": true,\n  \"kyc_verified\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users", "{{userId}}"]
+            },
+            "description": "Update user information (Admin only)"
+          }
+        },
+        {
+          "name": "Delete/Deactivate User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users", "{{userId}}"]
+            },
+            "description": "Soft delete user by deactivating (SuperAdmin only)"
+          }
+        },
+        {
+          "name": "Ban/Unban User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"ban\",\n  \"user_id\": \"{{userId}}\",\n  \"duration\": \"876600h\",\n  \"reason\": \"Testing ban functionality\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users/ban",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users", "ban"]
+            },
+            "description": "Ban or unban a user using Supabase Auth Admin API. No authentication required for testing."
+          }
+        },
+        {
+          "name": "Unban User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"unban\",\n  \"user_id\": \"{{userId}}\",\n  \"reason\": \"Testing unban functionality\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users/ban",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users", "ban"]
+            },
+            "description": "Unban a user using Supabase Auth Admin API. No authentication required for testing."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Card Management",
+      "description": "Card administration and tracking endpoints",
+      "item": [
+        {
+          "name": "Get Cards List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/cards?page=1&limit=10&search=&status=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "cards"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search in card name, cardholder name, referral code"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filter by status: active, inactive, suspended"
+                },
+                {
+                  "key": "user_id",
+                  "value": "",
+                  "description": "Filter by user ID"
+                },
+                {
+                  "key": "referral_code",
+                  "value": "",
+                  "description": "Filter by referral code"
+                },
+                {
+                  "key": "has_subscriptions",
+                  "value": "",
+                  "description": "Filter by subscription status: true, false"
+                },
+                {
+                  "key": "min_balance",
+                  "value": "",
+                  "description": "Minimum wallet balance"
+                },
+                {
+                  "key": "max_balance",
+                  "value": "",
+                  "description": "Maximum wallet balance"
+                }
+              ]
+            },
+            "description": "Retrieve paginated list of cards with comprehensive filtering"
+          }
+        },
+        {
+          "name": "Create Card",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{userId}}\",\n  \"card_name\": \"Premium Card\",\n  \"cardholder_name\": \"John Doe\",\n  \"phone_number\": \"+1234567890\",\n  \"referring_referral_code\": \"ABC12345\",\n  \"initial_balance\": 100.00,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/cards",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "cards"]
+            },
+            "description": "Create a new card (Admin only)"
+          }
+        },
+        {
+          "name": "Get Card Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/cards/{{cardId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "cards", "{{cardId}}"]
+            },
+            "description": "Retrieve detailed card information"
+          }
+        },
+        {
+          "name": "Update Card",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_name\": \"Updated Card Name\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/cards/{{cardId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "cards", "{{cardId}}"]
+            },
+            "description": "Update card information (Admin only)"
+          }
+        },
+        {
+          "name": "Suspend Card",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"suspend\": true,\n  \"suspension_reason\": \"Suspicious activity detected\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/cards/{{cardId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "cards", "{{cardId}}"]
+            },
+            "description": "Suspend a card (Admin only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transaction Management",
+      "description": "Transaction monitoring and processing endpoints",
+      "item": [
+        {
+          "name": "Get Transactions List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/transactions?page=1&limit=20&search=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "transactions"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search in payment IDs, reference IDs"
+                },
+                {
+                  "key": "transaction_type",
+                  "value": "",
+                  "description": "Comma-separated transaction types"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Comma-separated statuses"
+                },
+                {
+                  "key": "payment_method",
+                  "value": "",
+                  "description": "Comma-separated payment methods"
+                },
+                {
+                  "key": "card_id",
+                  "value": "",
+                  "description": "Filter by card ID"
+                },
+                {
+                  "key": "amount_min",
+                  "value": "",
+                  "description": "Minimum amount"
+                },
+                {
+                  "key": "amount_max",
+                  "value": "",
+                  "description": "Maximum amount"
+                }
+              ]
+            },
+            "description": "Retrieve paginated transaction list with advanced filtering"
+          }
+        },
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_id\": \"{{cardId}}\",\n  \"transaction_type\": \"subscription_payment\",\n  \"amount\": 100.00,\n  \"description\": \"Monthly subscription payment\",\n  \"invoice_id\": \"{{invoiceId}}\",\n  \"payment_method\": \"upi_one_time\",\n  \"reference_id\": \"TXN123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "transactions"]
+            },
+            "description": "Create a new transaction (Admin/Payments only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Income Analytics",
+      "description": "Income and commission tracking endpoints",
+      "item": [
+        {
+          "name": "Get Income Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/income?period=monthly&date_from=&date_to=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "income"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly",
+                  "description": "Analysis period: daily, weekly, monthly, yearly"
+                },
+                {
+                  "key": "date_from",
+                  "value": "",
+                  "description": "Income period start"
+                },
+                {
+                  "key": "date_to",
+                  "value": "",
+                  "description": "Income period end"
+                },
+                {
+                  "key": "income_type",
+                  "value": "",
+                  "description": "Type: direct, indirect, commission, subscription"
+                },
+                {
+                  "key": "payment_method",
+                  "value": "",
+                  "description": "Comma-separated payment methods"
+                },
+                {
+                  "key": "scheme_id",
+                  "value": "",
+                  "description": "Filter by scheme"
+                }
+              ]
+            },
+            "description": "Retrieve comprehensive income analytics and breakdowns"
+          }
+        },
+        {
+          "name": "Generate Income Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reportType\": \"detailed_income\",\n  \"dateFrom\": \"2024-01-01T00:00:00Z\",\n  \"dateTo\": \"2024-01-31T23:59:59Z\",\n  \"filters\": {\n    \"payment_method\": [\"upi_one_time\", \"mandate\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/income",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "income"]
+            },
+            "description": "Generate detailed income reports (Admin only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Referral Management",
+      "description": "Referral system administration endpoints",
+      "item": [
+        {
+          "name": "Get Referrals Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/referrals?page=1&limit=20&referral_level=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "referrals"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "referral_level",
+                  "value": "",
+                  "description": "Filter by levels (1-7, comma-separated)"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filter by status: active, inactive"
+                },
+                {
+                  "key": "card_id",
+                  "value": "",
+                  "description": "Filter by specific card"
+                }
+              ]
+            },
+            "description": "Retrieve referral tree data with statistics"
+          }
+        },
+        {
+          "name": "Get Referral Tree",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"get_tree\",\n  \"card_id\": \"{{cardId}}\",\n  \"max_levels\": 7\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/referrals",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "referrals"]
+            },
+            "description": "Get complete referral tree for a specific card"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Staff Management",
+      "description": "Staff role and permission management endpoints",
+      "item": [
+        {
+          "name": "Get Staff Members",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/staff?page=1&limit=20&role=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "staff"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "role",
+                  "value": "",
+                  "description": "Filter by roles (comma-separated)"
+                },
+                {
+                  "key": "is_active",
+                  "value": "",
+                  "description": "Filter by active status: true, false"
+                }
+              ]
+            },
+            "description": "Retrieve staff members with role information (Admin only)"
+          }
+        },
+        {
+          "name": "Assign Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"assign_role\",\n  \"user_id\": \"{{userId}}\",\n  \"role_name\": \"support\",\n  \"expires_at\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/staff",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "staff"]
+            },
+            "description": "Assign role to a staff member (Admin only)"
+          }
+        },
+        {
+          "name": "Remove Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"remove_role\",\n  \"user_id\": \"{{userId}}\",\n  \"role_id\": \"{{roleId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/staff",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "staff"]
+            },
+            "description": "Remove role from a staff member (Admin only)"
+          }
+        },
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"create_role\",\n  \"name\": \"custom_support\",\n  \"display_name\": \"Custom Support Role\",\n  \"description\": \"Custom support role with specific permissions\",\n  \"hierarchy_level\": 10,\n  \"permissions\": [\"view_users\", \"update_tickets\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/staff",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "staff"]
+            },
+            "description": "Create a new role (SuperAdmin only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "System Settings",
+      "description": "System configuration and settings endpoints",
+      "item": [
+        {
+          "name": "Get System Settings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/settings?category=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "settings"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "",
+                  "description": "Filter by settings category"
+                }
+              ]
+            },
+            "description": "Retrieve system configuration and settings (Admin only)"
+          }
+        },
+        {
+          "name": "Update Setting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"update_setting\",\n  \"key\": \"max_referral_levels\",\n  \"value\": 7,\n  \"data_type\": \"number\",\n  \"description\": \"Maximum number of referral levels\",\n  \"category\": \"referral\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "settings"]
+            },
+            "description": "Update system setting (Admin only)"
+          }
+        },
+        {
+          "name": "Update Referral Levels",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"update_referral_levels\",\n  \"levels\": [\n    {\n      \"level\": 1,\n      \"commission_percentage\": 10.0,\n      \"is_active\": true\n    },\n    {\n      \"level\": 2,\n      \"commission_percentage\": 5.0,\n      \"is_active\": true\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "settings"]
+            },
+            "description": "Update referral level configuration (Admin only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Support & Audit",
+      "description": "Support tickets and audit log endpoints",
+      "item": [
+        {
+          "name": "Get Support Tickets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/support?endpoint=tickets&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "support"],
+              "query": [
+                {
+                  "key": "endpoint",
+                  "value": "tickets",
+                  "description": "Data type: tickets, audit_logs, system_logs"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Retrieve support tickets"
+          }
+        },
+        {
+          "name": "Get Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/support?endpoint=audit_logs&page=1&limit=20&entity_type=&action=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "support"],
+              "query": [
+                {
+                  "key": "endpoint",
+                  "value": "audit_logs"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "entity_type",
+                  "value": "",
+                  "description": "Filter by entity type"
+                },
+                {
+                  "key": "action",
+                  "value": "",
+                  "description": "Filter by action"
+                },
+                {
+                  "key": "user_id",
+                  "value": "",
+                  "description": "Filter by user ID"
+                }
+              ]
+            },
+            "description": "Retrieve audit logs"
+          }
+        },
+        {
+          "name": "Create Audit Log",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"create_audit_log\",\n  \"entity_type\": \"user_profiles\",\n  \"entity_id\": \"{{userId}}\",\n  \"action_type\": \"update\",\n  \"old_values\": {\n    \"full_name\": \"Old Name\"\n  },\n  \"new_values\": {\n    \"full_name\": \"New Name\"\n  },\n  \"changed_fields\": [\"full_name\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/support",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "support"]
+            },
+            "description": "Create audit log entry"
+          }
+        },
+        {
+          "name": "Update Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"update_ticket\",\n  \"ticket_id\": \"{{ticketId}}\",\n  \"status\": \"In Progress\",\n  \"priority\": \"High\",\n  \"assigned_to\": \"support_agent_1\",\n  \"notes\": \"Ticket updated by admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/support",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "support"]
+            },
+            "description": "Update support ticket"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment Processing",
+      "description": "Payment processing and reconciliation endpoints",
+      "item": [
+        {
+          "name": "Mark Invoice Paid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"mark_invoice_paid\",\n  \"invoice_id\": \"{{invoiceId}}\",\n  \"amount\": 100.00,\n  \"method\": \"upi_one_time\",\n  \"source\": \"staff\",\n  \"reference_code\": \"TXN123456789\",\n  \"metadata\": {\n    \"processed_by\": \"admin_user\",\n    \"notes\": \"Manual payment verification\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "payments"]
+            },
+            "description": "Process invoice payment using database function (Payments role required)"
+          }
+        },
+        {
+          "name": "Bulk Mark Payments",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"bulk_mark_payments\",\n  \"payments\": [\n    {\n      \"invoice_id\": \"{{invoiceId1}}\",\n      \"amount\": 100.00,\n      \"method\": \"upi_one_time\",\n      \"source\": \"staff\",\n      \"reference_code\": \"TXN123456789\"\n    },\n    {\n      \"invoice_id\": \"{{invoiceId2}}\",\n      \"amount\": 150.00,\n      \"method\": \"mandate\",\n      \"source\": \"gateway\",\n      \"reference_code\": \"TXN987654321\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "payments"]
+            },
+            "description": "Process multiple payments in bulk (Payments role required)"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Add pre-request scripts here if needed",
+          "// For example, to set authentication token automatically"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Add test scripts here",
+          "pm.test('Status code is 200', function () {",
+          "    pm.response.to.have.status(200);",
+          "});",
+          "",
+          "pm.test('Response has success property', function () {",
+          "    const jsonData = pm.response.json();",
+          "    pm.expect(jsonData).to.have.property('success');",
+          "});"
+        ]
+      }
+    }
+  ]
+}

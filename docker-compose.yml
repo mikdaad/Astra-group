@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  akshayapatra:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: akshayapatra-app
+    ports:
+      - "3000:3000"  # Next.js app
+      - "6379:6379"  # Redis
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://localhost:6379
+    volumes:
+      - redis_data:/var/lib/redis
+      - ./logs:/var/log/supervisor
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - akshayapatra-network
+
+  # Optional: Separate Redis service for external access
+  redis-external:
+    image: redis:7-alpine
+    container_name: akshayapatra-redis-external
+    ports:
+      - "6380:6379"  # Different port to avoid conflict
+    volumes:
+      - redis_external_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - akshayapatra-network
+
+volumes:
+  redis_data:
+    driver: local
+  redis_external_data:
+    driver: local
+
+networks:
+  akshayapatra-network:
+    driver: bridge

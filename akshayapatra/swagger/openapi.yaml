@@ -1,0 +1,1087 @@
+openapi: 3.0.3
+info:
+  title: Akshayapatra Platform API
+  description: |
+    Complete API documentation for the Akshayapatra lottery platform built with Next.js and Supabase.
+    
+    This API provides endpoints for:
+    
+    ## Authentication APIs
+    - User registration (signup) with email/password, phone/OTP, or Google OAuth
+    - User login with email/password, phone/OTP, or Google OAuth
+    - Phone OTP verification for both signup and login
+    - Google OAuth authentication
+    - Password reset functionality
+    - User logout
+    - Email confirmation
+    
+    ## Admin APIs (Testing Mode)
+    - User management with filtering, search, pagination, and ban/unban functionality
+    - Card management and tracking
+    - Transaction monitoring and processing
+    - Income and commission analytics
+    - Referral system management
+    - Staff role management
+    - System settings configuration
+    - Support and audit operations
+    - Dashboard analytics and statistics
+    - Payment processing and reconciliation
+    
+    All endpoints return JSON responses and use standard HTTP status codes.
+    
+    **Important**: Admin APIs are currently in TESTING MODE with authentication DISABLED.
+    - No authentication headers required for testing
+    - APIs use Supabase Service Role Key internally
+    - Mock user objects are used where user context is needed
+    - Authentication will be re-enabled in production
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@akshayapatra.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://your-production-domain.com
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User authentication operations
+  - name: Password Management
+    description: Password reset and recovery operations
+  - name: Google OAuth
+    description: Google OAuth authentication operations
+  - name: Phone Authentication
+    description: Phone/SMS OTP authentication operations
+  - name: Admin Dashboard
+    description: Dashboard analytics and overview operations
+  - name: Admin User Management
+    description: User administration and management operations
+  - name: Admin Card Management
+    description: Card administration and tracking operations
+  - name: Admin Transaction Management
+    description: Transaction monitoring and processing operations
+  - name: Admin Income Analytics
+    description: Income and commission tracking operations
+  - name: Admin Referral Management
+    description: Referral system administration operations
+  - name: Admin Staff Management
+    description: Staff role and permission management operations
+  - name: Admin System Settings
+    description: System configuration and settings operations
+  - name: Admin Support & Audit
+    description: Support tickets and audit log operations
+  - name: Admin Payment Processing
+    description: Payment processing and reconciliation operations
+
+paths:
+  /api/auth/signup:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: |
+        Creates a new user account with email and password.
+        The user will receive a confirmation email to verify their account.
+      operationId: signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                  example: "user@example.com"
+                password:
+                  type: string
+                  minLength: 6
+                  description: User's password (minimum 6 characters)
+                  example: "securepassword123"
+                fullName:
+                  type: string
+                  description: User's full name (optional for email signup)
+                  example: "John Doe"
+      responses:
+        '200':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request - validation error or user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user
+      description: |
+        Authenticates a user with email and password.
+        Returns user data and session information upon successful login.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                  example: "user@example.com"
+                password:
+                  type: string
+                  description: User's password
+                  example: "securepassword123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  session:
+                    $ref: '#/components/schemas/Session'
+        '401':
+          description: Authentication failed - invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout user
+      description: |
+        Logs out the current user and invalidates their session.
+        No request body required.
+      operationId: logout
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/forgot-password:
+    post:
+      tags:
+        - Password Management
+      summary: Request password reset
+      description: |
+        Sends a password reset email to the specified email address.
+        The user will receive an email with a link to reset their password.
+      operationId: forgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                  example: "user@example.com"
+      responses:
+        '200':
+          description: Password reset email sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Password reset email sent successfully. Please check your email."
+        '400':
+          description: Bad request - invalid email or user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/reset-password:
+    post:
+      tags:
+        - Password Management
+      summary: Reset user password
+      description: |
+        Updates the user's password using the reset token from the email.
+        This endpoint should be called after the user clicks the reset link in their email.
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  minLength: 6
+                  description: New password (minimum 6 characters)
+                  example: "newsecurepassword123"
+      responses:
+        '200':
+          description: Password updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Password updated successfully"
+        '400':
+          description: Bad request - invalid password or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/confirm:
+    get:
+      tags:
+        - Authentication
+      summary: Confirm email address
+      description: |
+        Confirms a user's email address using the token from the confirmation email.
+        This is a redirect endpoint that processes the email confirmation link.
+      operationId: confirmEmail
+      parameters:
+        - name: token_hash
+          in: query
+          description: Token hash from the confirmation email
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Type of confirmation (usually 'signup')
+          required: true
+          schema:
+            type: string
+            example: "signup"
+      responses:
+        '200':
+          description: Email confirmed successfully
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Success page HTML
+        '400':
+          description: Invalid or expired confirmation token
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Error page HTML
+        '500':
+          description: Internal server error
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Error page HTML
+
+  /api/auth/google:
+    post:
+      tags:
+        - Google OAuth
+      summary: Initiate Google OAuth authentication
+      description: |
+        Initiates Google OAuth authentication flow.
+        Returns a redirect URL that the client should navigate to for Google sign-in.
+        Supports both login and signup modes.
+      operationId: googleAuth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - mode
+              properties:
+                mode:
+                  type: string
+                  enum: [login, signup]
+                  description: Authentication mode
+                  example: "login"
+      responses:
+        '200':
+          description: OAuth URL generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  redirectUrl:
+                    type: string
+                    format: uri
+                    description: Google OAuth redirect URL
+                    example: "https://accounts.google.com/oauth/authorize?..."
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad request - invalid mode
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/callback:
+    get:
+      tags:
+        - Google OAuth
+      summary: Handle OAuth callback
+      description: |
+        Handles OAuth callback from Google after user authentication.
+        Exchanges the authorization code for a session and redirects to the appropriate page.
+      operationId: oauthCallback
+      parameters:
+        - name: code
+          in: query
+          description: Authorization code from OAuth provider
+          required: true
+          schema:
+            type: string
+        - name: next
+          in: query
+          description: URL to redirect to after successful authentication
+          required: false
+          schema:
+            type: string
+            default: "/dashboard"
+      responses:
+        '302':
+          description: Redirect to success or error page
+          headers:
+            Location:
+              description: Redirect URL
+              schema:
+                type: string
+        '400':
+          description: Bad request - missing or invalid code
+          content:
+            text/html:
+              schema:
+                type: string
+                description: Error page redirect
+
+  /api/auth/phone/send-otp:
+    post:
+      tags:
+        - Phone Authentication
+      summary: Send OTP for login
+      description: |
+        Sends an OTP (One-Time Password) via SMS to the provided phone number for login.
+        The phone number should be in international format (e.g., +1234567890).
+      operationId: sendLoginOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phoneNumber
+              properties:
+                phoneNumber:
+                  type: string
+                  pattern: '^\+\d{1,4}\d{10,15}$'
+                  description: Phone number in international format
+                  example: "+911234567890"
+      responses:
+        '200':
+          description: OTP sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "OTP sent successfully"
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad request - invalid phone number format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/phone/verify-otp:
+    post:
+      tags:
+        - Phone Authentication
+      summary: Verify OTP for login
+      description: |
+        Verifies the OTP sent to the phone number and logs in the user.
+        Returns user data and session information upon successful verification.
+      operationId: verifyLoginOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phoneNumber
+                - otp
+              properties:
+                phoneNumber:
+                  type: string
+                  pattern: '^\+\d{1,4}\d{10,15}$'
+                  description: Phone number in international format
+                  example: "+911234567890"
+                otp:
+                  type: string
+                  pattern: '^\d{6}$'
+                  description: 6-digit OTP code
+                  example: "123456"
+      responses:
+        '200':
+          description: OTP verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  session:
+                    $ref: '#/components/schemas/Session'
+        '400':
+          description: Bad request - invalid OTP or phone number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/phone/send-signup-otp:
+    post:
+      tags:
+        - Phone Authentication
+      summary: Send OTP for signup
+      description: |
+        Sends an OTP via SMS to the provided phone number for user registration.
+        Requires both phone number and full name for account creation.
+      operationId: sendSignupOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phoneNumber
+                - fullName
+              properties:
+                phoneNumber:
+                  type: string
+                  pattern: '^\+\d{1,4}\d{10,15}$'
+                  description: Phone number in international format
+                  example: "+911234567890"
+                fullName:
+                  type: string
+                  minLength: 2
+                  description: User's full name
+                  example: "John Doe"
+      responses:
+        '200':
+          description: OTP sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "OTP sent successfully"
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Bad request - invalid phone number or missing full name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict - user with this phone number already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/phone/verify-signup-otp:
+    post:
+      tags:
+        - Phone Authentication
+      summary: Verify OTP for signup
+      description: |
+        Verifies the OTP and creates a new user account with the phone number.
+        Returns user data and session information upon successful account creation.
+      operationId: verifySignupOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phoneNumber
+                - fullName
+                - otp
+              properties:
+                phoneNumber:
+                  type: string
+                  pattern: '^\+\d{1,4}\d{10,15}$'
+                  description: Phone number in international format
+                  example: "+911234567890"
+                fullName:
+                  type: string
+                  minLength: 2
+                  description: User's full name
+                  example: "John Doe"
+                otp:
+                  type: string
+                  pattern: '^\d{6}$'
+                  description: 6-digit OTP code
+                  example: "123456"
+      responses:
+        '200':
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  session:
+                    $ref: '#/components/schemas/Session'
+        '400':
+          description: Bad request - invalid OTP, phone number, or missing data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user identifier
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "user@example.com"
+        email_confirmed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the email was confirmed
+          example: "2024-01-15T10:30:00Z"
+        created_at:
+          type: string
+          format: date-time
+          description: When the user account was created
+          example: "2024-01-15T10:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: When the user account was last updated
+          example: "2024-01-15T10:30:00Z"
+        last_sign_in_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the user last signed in
+          example: "2024-01-15T10:30:00Z"
+        phone:
+          type: string
+          nullable: true
+          description: User's phone number (for phone-based authentication)
+          example: "+911234567890"
+        user_metadata:
+          type: object
+          nullable: true
+          description: Additional user metadata (includes full_name, etc.)
+          properties:
+            full_name:
+              type: string
+              description: User's full name
+              example: "John Doe"
+            display_name:
+              type: string
+              description: User's display name
+              example: "John Doe"
+      required:
+        - id
+        - email
+        - created_at
+        - updated_at
+
+    Session:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: JWT access token
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        refresh_token:
+          type: string
+          description: JWT refresh token
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        expires_in:
+          type: integer
+          description: Token expiration time in seconds
+          example: 3600
+        token_type:
+          type: string
+          description: Type of token
+          example: "bearer"
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+        - access_token
+        - refresh_token
+        - expires_in
+        - token_type
+        - user
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Invalid email or password"
+      required:
+        - error
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login endpoint
+
+  # Admin Dashboard API (Sample)
+  /api/admin/dashboard:
+    get:
+      tags:
+        - Admin Dashboard
+      summary: Get dashboard overview
+      description: |
+        Retrieve comprehensive dashboard statistics and metrics.
+        
+        **Requires**: Admin, Support, or Staff role
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: period
+          in: query
+          description: Time period for statistics
+          schema:
+            type: string
+            enum: [day, week, month, year]
+            default: month
+      responses:
+        '200':
+          description: Dashboard data retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      metrics:
+                        type: object
+                        properties:
+                          users:
+                            type: object
+                            properties:
+                              total:
+                                type: integer
+                                example: 10982
+                              new:
+                                type: integer
+                                example: 80
+                              active:
+                                type: integer
+                                example: 6646
+                              growth:
+                                type: number
+                                example: 10.55
+                          income:
+                            type: object
+                            properties:
+                              total:
+                                type: number
+                                example: 50000
+                              subscription:
+                                type: number
+                                example: 30000
+                              commission:
+                                type: number
+                                example: 20000
+                              growth:
+                                type: number
+                                example: 15.2
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Unauthorized"
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Forbidden - Admin access required"
+
+  # Admin Users API (Sample)
+  /api/admin/users:
+    get:
+      tags:
+        - Admin User Management
+      summary: Get users list
+      description: |
+        Retrieve paginated list of users with filtering and search capabilities.
+        
+        **Requires**: Admin, Support, or Staff role
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: search
+          in: query
+          description: Search in name, phone, email
+          schema:
+            type: string
+            minLength: 2
+        - name: page
+          in: query
+          description: Page number (1-based)
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Items per page (max 100)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: status
+          in: query
+          description: Filter by user status
+          schema:
+            type: string
+            enum: [active, inactive, suspended]
+        - name: kyc_verified
+          in: query
+          description: Filter by KYC verification status
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: "123e4567-e89b-12d3-a456-426614174000"
+                        name:
+                          type: string
+                          example: "John Doe"
+                        phone:
+                          type: string
+                          example: "+1234567890"
+                        kycStatus:
+                          type: string
+                          enum: [Verified, Pending]
+                          example: "Verified"
+                        status:
+                          type: string
+                          enum: [Active, Inactive]
+                          example: "Active"
+                        totalCards:
+                          type: integer
+                          example: 2
+                        totalWalletBalance:
+                          type: number
+                          example: 1500.50
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2024-01-15T10:30:00Z"
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        example: 1
+                      limit:
+                        type: integer
+                        example: 10
+                      total:
+                        type: integer
+                        example: 100
+                      totalPages:
+                        type: integer
+                        example: 10
+                      hasNext:
+                        type: boolean
+                        example: true
+                      hasPrev:
+                        type: boolean
+                        example: false
+
+  # Admin Payment Processing API (Sample)
+  /api/admin/payments:
+    post:
+      tags:
+        - Admin Payment Processing
+      summary: Process payments
+      description: |
+        Process invoice payments using database functions for atomic operations.
+        
+        **Requires**: Payments, Admin, or SuperAdmin role
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - action
+                - invoice_id
+                - amount
+                - method
+              properties:
+                action:
+                  type: string
+                  enum: [mark_invoice_paid]
+                  example: "mark_invoice_paid"
+                invoice_id:
+                  type: string
+                  format: uuid
+                  example: "123e4567-e89b-12d3-a456-426614174000"
+                amount:
+                  type: number
+                  minimum: 0.01
+                  example: 100.00
+                method:
+                  type: string
+                  enum: [mandate, upi_one_time, cash, card, netbanking, wallet, other]
+                  example: "upi_one_time"
+                source:
+                  type: string
+                  enum: [gateway, manual, staff, autodebit]
+                  default: staff
+                  example: "staff"
+                reference_code:
+                  type: string
+                  example: "TXN123456789"
+                metadata:
+                  type: object
+                  example: 
+                    processed_by: "admin_user"
+                    notes: "Manual payment verification"
+      responses:
+        '200':
+          description: Payment processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      payment_id:
+                        type: string
+                        format: uuid
+                        example: "456e7890-e89b-12d3-a456-426614174000"
+                  message:
+                    type: string
+                    example: "Payment processed successfully"
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login endpoint
+
+security:
+  - BearerAuth: []
+
+# Additional information
+externalDocs:
+  description: |
+    Complete API documentation including admin APIs.
+    
+    For detailed admin API documentation, see: admin-api.yaml
+    For authentication API documentation, see the sections above.
+    For database functions and triggers, see: tables_supabase.md
+  url: https://supabase.com/docs/guides/auth 

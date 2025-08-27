@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+/* Preload Poppins font for better performance */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z1xlFd2JQEk.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins), 'Poppins', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  
+  /* Custom theme variables for orange design */
+  --background: transparent;
+  --foreground: #ffffff;
+  
+  /* Orange theme colors */
+  --card: rgba(234, 88, 12, 0.1);
+  --card-foreground: #ffffff;
+  --popover: rgba(234, 88, 12, 0.9);
+  --popover-foreground: #ffffff;
+  --primary: #ea580c;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(245, 245, 245, 0.1);
+  --secondary-foreground: #ea580c;
+  --muted: rgba(245, 245, 245, 0.1);
+  --muted-foreground: rgba(255, 255, 255, 0.7);
+  --accent: rgba(245, 245, 245, 0.1);
+  --accent-foreground: #ea580c;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(234, 88, 12, 0.3);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #ea580c;
+  
+  /* Chart colors */
+  --chart-1: #ea580c;
+  --chart-2: #f59e0b;
+  --chart-3: #eab308;
+  --chart-4: #84cc16;
+  --chart-5: #22c55e;
+  
+  /* Sidebar colors */
+  --sidebar: #000000;
+  --sidebar-foreground: rgba(255, 255, 255, 0.25);
+  --sidebar-primary: #ea580c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(234, 88, 12, 0.1);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(234, 88, 12, 0.3);
+  --sidebar-ring: #ea580c;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    font-family: var(--font-sans);
+    /* Don't apply bg-background since we want custom gradients */
+    color: var(--foreground);
+  }
+  
+  /* Explicitly set Poppins for admin section */
+  .font-sans {
+    font-family: var(--font-poppins), 'Poppins', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+  }
+  
+  /* Admin specific font override */
+  [data-admin="true"], [data-admin="true"] * {
+    font-family: var(--font-poppins), 'Poppins', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+  }
+  
+  /* Additional specific overrides for common elements */
+  [data-admin="true"] h1, [data-admin="true"] h2, [data-admin="true"] h3, 
+  [data-admin="true"] h4, [data-admin="true"] h5, [data-admin="true"] h6,
+  [data-admin="true"] p, [data-admin="true"] span, [data-admin="true"] div,
+  [data-admin="true"] button, [data-admin="true"] input, [data-admin="true"] label {
+    font-family: var(--font-poppins), 'Poppins', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+  }
+  
+  /* Ensure shadcn components work with our theme */
+  .bg-background {
+    background: transparent !important;
+  }
+  
+  /* Custom scrollbar for orange theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(234, 88, 12, 0.5);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(234, 88, 12, 0.7);
+  }
+
+  /* Ensure wide tables scroll properly */
+  .table-container {
+    overflow-x: auto;
+    min-width: 100%;
+  }
+  
+  /* Fix for admin layout horizontal scroll */
+  [data-admin="true"] {
+    width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+
+/* Hide horizontal scrollbar on small screens only (keeps scrolling) */
+@media (max-width: 767px) {
+  .hide-scrollbar-mobile {
+    -ms-overflow-style: none;  /* IE/Edge */
+    scrollbar-width: none;     /* Firefox */
+    -webkit-overflow-scrolling: touch; /* smooth momentum on iOS */
+  }
+  .hide-scrollbar-mobile::-webkit-scrollbar {
+    display: none;             /* Chrome/Safari */
+  }
+}
+
+/* Comprehensive scrollbar hiding utilities */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+  -webkit-overflow-scrolling: touch; /* smooth momentum on iOS */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;             /* Chrome/Safari */
+}
+
+/* Hide scrollbars on the main page container */
+body {
+  overflow-x: hidden;
+}
+
+/* Ensure the main page doesn't show horizontal scrollbars */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+html::-webkit-scrollbar, 
+body::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Additional mobile-specific scrollbar hiding */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  /* Hide scrollbars on all scrollable elements on mobile */
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}
