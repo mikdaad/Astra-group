@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Akshayapatra Platform API
+  title: Golden Diamond Investment Platform API
   description: |
-    Complete API documentation for the Akshayapatra lottery platform built with Next.js and Supabase.
+    Complete API documentation for the Golden Diamond Investment platform built with Next.js and Supabase.
     
     This API provides endpoints for:
     
@@ -16,11 +16,11 @@ info:
     - Email confirmation
     
     ## Admin APIs (Testing Mode)
-    - User management with filtering, search, pagination, and ban/unban functionality
-    - Card management and tracking
+    - Investment plan management with filtering, search, pagination
+    - Investment card management and tracking
     - Transaction monitoring and processing
-    - Income and commission analytics
-    - Referral system management
+    - Investment returns and portfolio analytics
+    - Gold & diamond reward system management
     - Staff role management
     - System settings configuration
     - Support and audit operations
@@ -37,7 +37,7 @@ info:
   version: 1.0.0
   contact:
     name: API Support
-    email: support@akshayapatra.com
+    email: support@goldendiamondsinvestment.com
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT

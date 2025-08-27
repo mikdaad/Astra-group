@@ -23,7 +23,7 @@ export default function LoginPage() {
 
   const handleAuthSuccess = useCallback(() => {
     // Redirect to dashboard after successful authentication
-    router.push('/dashboard')
+    router.push('/')
   }, [router])
 
   return (

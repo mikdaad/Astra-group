@@ -1,6 +1,6 @@
 # Environment Variables
 
-This document lists all environment variables used in the Akshayapatra application.
+This document lists all environment variables used in the Golden Diamond Investment application.
 
 ## Database & Authentication
 

@@ -108,7 +108,7 @@ function PaymentSuccessPopup({ receipt, onClose, onPrintReceipt }: { receipt: Pa
             transition={{ delay: 0.7, duration: 0.4 }}
             className="text-2xl font-bold mb-2"
           >
-            Payment Successful!
+            Investment Payment Successful!
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -116,7 +116,7 @@ function PaymentSuccessPopup({ receipt, onClose, onPrintReceipt }: { receipt: Pa
             transition={{ delay: 0.9, duration: 0.4 }}
             className="text-white/90 mb-4"
           >
-            Your payment of ₹{receipt.amount} has been processed successfully.
+            Your investment payment of ₹{receipt.amount} has been processed successfully.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
@@ -184,7 +184,7 @@ function PaymentSuccessPopup({ receipt, onClose, onPrintReceipt }: { receipt: Pa
                 className="space-y-3 mb-6"
               >
                 <ReceiptRow label="Amount" value={`₹${receipt.amount.toFixed(2)}`} />
-                <ReceiptRow label="Scheme" value={receipt.schemeName} />
+                <ReceiptRow label="Investment Plan" value={receipt.schemeName} />
                 <ReceiptRow label="Month" value={receipt.month} />
                 <ReceiptRow label="Period Index" value={String(receipt.periodIndex)} />
                 <ReceiptRow label="Card ID" value={receipt.cardId} />
@@ -308,7 +308,7 @@ function RunningCard({
       />
       <div className="relative z-10 p-4 flex items-center justify-between text-white/80">
         <span className="inline-flex items-center gap-2 text-sm">
-          <TicketPercent className="w-4 h-4" /> Live Scheme
+          <TicketPercent className="w-4 h-4" /> Live Program
         </span>
         <button className="p-2 rounded-full bg-white/10 hover:bg-white/15">
           <ShoppingCart className="w-4 h-4" />
@@ -364,7 +364,7 @@ function RunningCard({
 
             {data.isPastUnpaid && (
               <p className="absolute ml-4 text-amber-200 text-xs">
-                Pay this month to be eligible for scheme
+                Pay this month to be eligible for program
               </p>
             )}
 
@@ -573,7 +573,7 @@ export default function Page() {
       const rewards = await getSchemeTopRewards(schemeId, supabase);
       const exploreData: ExploreScheme[] = rewards.map((reward: any) => ({
         id: reward.reward_id,
-        title: `Prize #${reward.position}`,
+        title: `Reward #${reward.position}`,
         subtitle: reward.title || "Exciting Reward",
         image: reward.image_url,
         cta: "Explore Now",
@@ -581,7 +581,7 @@ export default function Page() {
       setExploreSchemes(exploreData);
     } catch (err) {
       console.error("Failed to load explore schemes:", err);
-      setError("Could not load prize information.");
+      setError("Could not load reward information.");
     }
   }
 
@@ -967,12 +967,12 @@ async function handleDownloadReceipt(s: RunningScheme) {
 
   line("Name", userName || "—");
   line("Phone", userPhone || "—");
-  line("Scheme", schemeName);
+  line("Investment Plan", schemeName);
   line("Month", monthLabel);
   line("Period Index", String(s.periodIndex));
   line("Amount", `Rs.${s.price.toFixed(2)}`);
   line("Card ID", s.cardId);
-  line("Scheme ID", s.schemeId);
+  line("Plan ID", s.schemeId);
   line("Generated On", new Date().toLocaleString());
 
   // Footer/border
@@ -990,7 +990,7 @@ async function handleDownloadReceipt(s: RunningScheme) {
       {/* Loading Overlay */}
       {isInitialLoading && (
         <PageLoaderOverlay 
-          text="L U C K Y   D R A W" 
+          text="G O L D   &   D I A M O N D S" 
           duration={2.0}
         />
       )}
@@ -1013,13 +1013,13 @@ async function handleDownloadReceipt(s: RunningScheme) {
     
     <main className="text-white/90">
       <div className="mx-auto max-w-6xl px-5 py-6">
-        <h1 className="text-xl font-semibold">Live Lucky Draw</h1>
+        <h1 className="text-xl font-semibold">Gold & Diamond Investment Portal</h1>
 
         {/* Card Selector Dropdown */}
         {userCards.length > 0 && (
           <div className="mt-4">
             <label htmlFor="card-select" className="block text-sm font-medium text-white/70">
-              Select Your Scheme
+              Select Your Investment Plan
             </label>
             <select
               id="card-select"
@@ -1030,7 +1030,7 @@ async function handleDownloadReceipt(s: RunningScheme) {
             >
               {userCards.map((card) => (
                 <option key={card.id} value={card.id}>
-                  {card.scheme ? card.scheme.name : "Scheme Not Available"}
+                  {card.scheme ? card.scheme.name : "Investment Plan Not Available"}
                 </option>
               ))}
             </select>
@@ -1041,7 +1041,7 @@ async function handleDownloadReceipt(s: RunningScheme) {
       {/* Loading, Error, and Empty States */}
       {isLoading && (
         <div className="flex justify-center items-center h-64 text-white/70">
-          <Loader2 className="w-8 h-8 animate-spin mr-3" /> Loading schemes...
+          <Loader2 className="w-8 h-8 animate-spin mr-3" /> Loading investment plans...
         </div>
       )}
       {error && !isLoading && (
@@ -1051,7 +1051,7 @@ async function handleDownloadReceipt(s: RunningScheme) {
       )}
       {!isLoading && !error && userCards.length === 0 && (
         <div className="mx-auto max-w-6xl px-5 text-center text-white/70">
-          <p>You are not enrolled in any schemes yet.</p>
+          <p>You are not enrolled in any investment plans yet.</p>
         </div>
       )}
 

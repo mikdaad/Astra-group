@@ -1,6 +1,4 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { updateSession } from './utils/supabase/middleware';
-import { adminAuthMiddleware } from './middleware/adminAuth';
 
 const REF_COOKIE = 'referral_code';
 const DAYS_30 = 60 * 60 * 24 * 30;
@@ -10,6 +8,29 @@ export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
   const ref = url.searchParams.get('ref');
   const { pathname } = req.nextUrl;
+
+  // Block unnecessary routes for gold and diamonds investment program
+  const blockedRoutes = [
+    '/promoters',
+    '/commision',
+    '/installments',
+    '/transfers',
+    '/cards',
+    '/viewall',
+    '/test-cards',
+    '/winnerview',
+    '/brochure',
+    '/admin/referrals',
+    '/dashboard',
+    '/wallet'
+  ];
+
+  // Check if current path should be blocked
+  const shouldBlock = blockedRoutes.some(route => pathname.startsWith(route));
+  if (shouldBlock) {
+    // Redirect to homepage for blocked routes
+    return NextResponse.redirect(new URL('/', req.url));
+  }
 
   // 1. Check for the referral code first
   if (ref) {
@@ -32,9 +53,8 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-
-  // 3. If no referral code and not admin route, proceed with Supabase session update
-  return await updateSession(req);
+  // Allow all routes without authentication for public access
+  return NextResponse.next();
 }
 
 // Use the more comprehensive matcher from your second example

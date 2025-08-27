@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 
 type FaqItem = { question: string; answer: string };
 
-const categories = ["General", "Work", "Payment", "Services"] as const;
+const categories = ["General", "Work", "Payment", "Privacy Policy"] as const;
 const initialFaqs: FaqItem[] = [
   {
     question: "How do I manage my notifications?",

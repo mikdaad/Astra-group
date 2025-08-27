@@ -43,7 +43,7 @@ export default function RegistrationFee({ amountRs = 99, onComplete, isLoading: 
         background: "linear-gradient(180deg, rgba(255,140,66,0.9) 0%, rgba(238,98,0,0.9) 60%, rgba(77,35,9,1) 100%)"
       }}>
         <div className="py-10 md:py-12 px-6 md:px-10">
-          <h2 className="text-center text-white text-2xl md:text-3xl font-semibold">Welcome to Akshaya Patra</h2>
+          <h2 className="text-center text-white text-2xl md:text-3xl font-semibold">Welcome to Golden Diamond Investment</h2>
 
           <div className="mx-auto mt-10 md:mt-12 w-full max-w-2xl rounded-2xl border border-white/10 bg-black/60 backdrop-blur p-6 md:p-8">
             <ul className="space-y-4 text-sm text-white/90">

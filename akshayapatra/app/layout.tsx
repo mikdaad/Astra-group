@@ -9,7 +9,7 @@ import ProfileSetupWrapper from "./components/ProfileSetupWrapper";
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],  
 });
 
 
@@ -20,9 +20,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Akshayapatra",
-  description: "Financial services platform",
+  title: "Golden Diamond Investment",
+  description: "Premium gold and diamonds investment platform",
 };
+
 
 export default function RootLayout({
   children,
@@ -44,7 +45,7 @@ export default function RootLayout({
         <StorageInitializer />
         <ProfileSetupWrapper>
           <ConditionalLayout>
-            {children}
+             {children}
           </ConditionalLayout>
         </ProfileSetupWrapper>
         {/* App chrome (header/sidebar/nav), hidden on certain routes via client component */}

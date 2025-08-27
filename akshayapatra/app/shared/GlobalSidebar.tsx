@@ -30,30 +30,27 @@ type RouteItem =
 
 const userRoutes: RouteItem[] = [
   { href: "/", label: "Home", iconSrc: "/iconsvgs/home.svg", iconAlt: "home", iconSize: 24 },
-  { href: "/viewall", label: "View All", iconSrc: "/iconsvgs/view.svg", iconAlt: "viewall", iconSize: 34 },
-  { href: "/transfers", label: "History", iconSrc: "/iconsvgs/transfers.svg", iconAlt: "transfers" },
-  { href: "/cards", label: "Cards", icon: <CreditCard className={iconClass} /> },
-  { href: "/settings/security", label: "Card Details", iconSrc: "/iconsvgs/security.svg", iconAlt: "security", iconSize: 28 },
-  { href: "/dashboard", label: "Wallet", iconSrc: "/iconsvgs/teams.svg", iconAlt: "teams" },
+  { href: "/about", label: "About", iconSrc: "/iconsvgs/viewall/about.svg", iconAlt: "about", iconSize: 24 },
+  { href: "/luckydraw", label: "Gold & Diamond Rewards", iconSrc: "/iconsvgs/luckydraw.svg", iconAlt: "rewards", iconSize: 30 },
+  { href: "/transactionhistory", label: "Investment History", iconSrc: "/iconsvgs/transfers.svg", iconAlt: "history" },
   { href: "/support", label: "Support", iconSrc: "/iconsvgs/support.svg", iconAlt: "support", iconSize: 28 },
-  { href: "/luckydraw", label: "Lucky Draw", iconSrc: "/iconsvgs/luckydraw.svg", iconAlt: "Lucky Draw", iconSize: 30 },
 ];
 
 // Admin routes
 const adminRoutes: RouteItem[] = [
   { href: "/admin", label: "Admin Dashboard", icon: <LayoutDashboard className={iconClass} /> },
-  { href: "/admin/schemes", label: "Schemes", icon: <Trophy className={iconClass} /> },
-  { href: "/admin/cards", label: "Cards", icon: <CreditCard className={iconClass} /> },
-  { href: "/admin/users", label: "Users", icon: <Users className={iconClass} /> },
-  { href: "/admin/income", label: "Income", icon: <IndianRupee className={iconClass} /> },
-  { href: "/admin/winners", label: "Winners", icon: <Gift className={iconClass} /> },
-  { href: "/admin/referrals", label: "Referrals", icon: <UserCheck className={iconClass} /> },
-  { href: "/admin/staff", label: "Staff", icon: <UserPlus className={iconClass} /> },
+  { href: "/admin/schemes", label: "Investment Plans", icon: <Trophy className={iconClass} /> },
+  { href: "/admin/cards", label: "Investment Cards", icon: <CreditCard className={iconClass} /> },
+  { href: "/admin/users", label: "Investors", icon: <Users className={iconClass} /> },
+  { href: "/admin/income", label: "Income & Returns", icon: <IndianRupee className={iconClass} /> },
+  { href: "/admin/winners", label: "Reward Winners", icon: <Gift className={iconClass} /> },
+  { href: "/admin/staff", label: "Staff Management", icon: <UserPlus className={iconClass} /> },
   { href: "/admin/support", label: "Support Requests", icon: <Headphones className={iconClass} /> },
   { href: "/admin/profile", label: "Profile", icon: <User className={iconClass} /> },
 ];
 
 const userBottomRoutes: RouteItem[] = [
+    { href: "/privacy-policy", label: "Privacy Policy", icon: <TicketPercent className="w-6 h-6" /> },
     { href: "/settings", label: "Settings", icon: <Settings className="w-6 h-6" /> },
     { href: "/logout", label: "Logout", icon: <LogOut className="w-6 h-6" /> },
   ];
@@ -104,7 +101,6 @@ export default function GlobalSidebar() {
         '/admin/cards': ['cards:view'],
         '/admin/users': ['users:view'],
         '/admin/income': ['income:view'],
-        '/admin/referrals': ['referrals:view'],
         '/admin/staff': ['staff:view'],
         '/admin/winners': ['winners:view'],
         '/admin/support': ['support:view'],

@@ -1,7 +1,7 @@
-# ASTRA Loading States Implementation Guide
+# Golden Diamond Investment Loading States Implementation Guide
 
 ## Overview
-This guide describes the comprehensive loading state implementation across the Akshayapatra application using the ASTRA branded loading components.
+This guide describes the comprehensive loading state implementation across the Golden Diamond Investment application using the branded loading components.
 
 ## Components Created
 
@@ -19,10 +19,10 @@ Main loading component with two variants:
 #### Usage Examples:
 ```tsx
 // Full-screen loading
-<PageLoader text="D A S H B O A R D" duration={1.5} />
+<PageLoader text="I N V E S T M E N T" duration={1.5} />
 
 // Overlay loading
-<PageLoaderOverlay text="L O A D I N G" duration={2.0} />
+<PageLoaderOverlay text="G O L D   &   D I A M O N D S" duration={2.0} />
 ```
 
 ## Loading Pages Added
@@ -36,7 +36,7 @@ Main loading component with two variants:
 - `/transactionhistory/loading.tsx` - "T R A N S A C T I O N S"
 - `/profile/loading.tsx` - "P R O F I L E"
 - `/(home)/login/loading.tsx` - "L O G I N"
-- `/(home)/profile-setup/loading.tsx` - "A S T R A"
+- `/(home)/profile-setup/loading.tsx` - "G O L D   I N V E S T M E N T"
 
 ## Component-Level Loading States
 

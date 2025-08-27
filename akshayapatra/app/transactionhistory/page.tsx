@@ -23,11 +23,8 @@ type Txn = {
 const INR = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 });
 
 const seedTxns: Txn[] = [
-  { id: "t1", date: new Date("2025-07-03T12:06:00"), bank: "ICICI Bank", last4: "8897", brand: "visa", method: "card", status: "success", amount: 2499 },
-  { id: "t2", date: new Date("2025-05-28T12:06:00"), bank: "ICICI Bank", last4: "8897", brand: "visa", method: "card", status: "success", amount: 2499 },
-  { id: "t3", date: new Date("2025-05-21T12:06:00"), bank: "ICICI Bank", last4: "8897", brand: "mastercard", method: "card", status: "success", amount: 2499 },
-  { id: "t4", date: new Date("2025-05-15T12:06:00"), bank: "ICICI Bank", last4: "8897", brand: "mastercard", method: "card", status: "success", amount: 2499 },
-  { id: "t5", date: new Date("2025-07-01T12:06:00"), bank: "ICICI Bank", last4: "8897", brand: "visa", method: "card", status: "success", amount: 2499 },
+  // Transactions will be loaded from API
+  // Remove dummy data as requested
 ];
 
 type Filters = {

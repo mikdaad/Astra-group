@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -8,7 +9,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Search, ArrowLeft, Phone, Bell, ChevronDown } from 'lucide-react';
 import ReferralButton from '../shared/ReferralButton';
 
-const navigationItems = ['ABOUT', 'SERVICES', 'CONTACT', 'MORE'];
+// Updated navigation items with correct links and labels
+const navigationItems = [
+  { name: 'ABOUT', href: '/about' },
+  { name: 'PRIVACY POLICY', href: '/privacy-policy' }
+];
 
 export default function Header() {
   const [displayName, setDisplayName] = useState('User');
@@ -100,13 +105,14 @@ export default function Header() {
         {/* Left Navigation */}
         <nav className="hidden md:flex items-center gap-2 ml-24">
           {navigationItems.map((item) => (
-            <Button
-              key={item}
-              variant="ghost"
-              className="h-10 px-4 text-white font-semibold font-['Poppins'] hover:bg-white/10"
-            >
-              {item}
-            </Button>
+            <Link key={item.name} href={item.href} passHref>
+              <Button
+                variant="ghost"
+                className="h-10 px-4 text-white font-semibold font-['Poppins'] hover:bg-white/10"
+              >
+                {item.name}
+              </Button>
+            </Link>
           ))}
         </nav>
 

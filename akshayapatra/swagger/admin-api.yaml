@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: Akshayapatra Admin API
+  title: Golden Diamond Investment Admin API
   description: |
-    Comprehensive Admin API for the Akshayapatra lottery platform.
+    Comprehensive Admin API for the Golden Diamond Investment platform.
     
     This API provides endpoints for administrative operations including:
-    - User management with filtering, search, and pagination
+    - Investment plan management with filtering, search, and pagination
     - Card management and tracking
     - Transaction monitoring and processing
     - Income and commission analytics

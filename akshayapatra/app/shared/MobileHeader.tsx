@@ -4,20 +4,16 @@ import React from "react";
 import { Menu, ShoppingCart, Bell } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import ReferralButton from "../components/shared/ReferralButton";
 
 type Item = { href: string; label: string; iconPath: string };
 
 const menuItems: Item[] = [
-  { href: "/wallet", label: "Wallet", iconPath: "/iconsvgs/viewall/wallet.svg" },
-  { href: "/cards", label: "Cards", iconPath: "/iconsvgs/viewall/cards.svg" },
-  { href: "/installments", label: "Instalments", iconPath: "/iconsvgs/viewall/installments.svg" },
-  { href: "/transactionhistory", label: "Transaction History", iconPath: "/iconsvgs/viewall/transactionhistory.svg" },
-  { href: "/winnerspage", label: "Winner's List", iconPath: "/iconsvgs/viewall/trophy.svg" },
-  { href: "/promoters", label: "Promoters", iconPath: "/iconsvgs/viewall/promoters.svg" },
-  { href: "/rewards", label: "Rewards", iconPath: "/iconsvgs/viewall/rewards.svg" },
-  { href: "/achievers", label: "Achiever's", iconPath: "/iconsvgs/viewall/achievers.svg" },
-  { href: "/commision", label: "Commissions", iconPath: "/iconsvgs/viewall/commissions.svg" },
+  { href: "/about", label: "About", iconPath: "/iconsvgs/viewall/about.svg" },
+  { href: "/transactionhistory", label: "Investment History", iconPath: "/iconsvgs/viewall/transactionhistory.svg" },
+  { href: "/winnerspage", label: "Reward Winners", iconPath: "/iconsvgs/viewall/trophy.svg" },
+  { href: "/rewards", label: "Gold & Diamond Rewards", iconPath: "/iconsvgs/viewall/rewards.svg" },
+  { href: "/achievers", label: "Top Investors", iconPath: "/iconsvgs/viewall/achievers.svg" },
+  { href: "/privacy-policy", label: "Privacy Policy", iconPath: "/iconsvgs/viewall/privacy.svg" },
   { href: "/settings", label: "Settings", iconPath: "/iconsvgs/viewall/settings.svg" },
 ];
 
@@ -34,9 +30,8 @@ export default function MobileHeader() {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <div className="text-base font-semibold">Akshaya Patra</div>
+          <div className="text-base font-semibold">Golden Diamond Investment</div>
           <div className="flex items-center gap-2">
-            <ReferralButton variant="mobile" />
             <button className="h-9 w-9 grid place-items-center rounded-full bg-white/10"><ShoppingCart className="w-5 h-5" /></button>
             <button className="h-9 w-9 grid place-items-center rounded-full bg-white/10"><Bell className="w-5 h-5" /></button>
           </div>

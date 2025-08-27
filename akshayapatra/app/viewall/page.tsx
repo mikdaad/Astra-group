@@ -9,16 +9,10 @@ type Item = {
 };
 
 const menuItems: Item[] = [
-  { href: "/wallet", label: "Wallet", iconPath: "/iconsvgs/viewall/wallet.svg" },
-  { href: "/installments", label: "Installments", iconPath: "/iconsvgs/viewall/installments.svg" },
-  { href: "/transactionhistory", label: "Transaction History", iconPath: "/iconsvgs/viewall/transactionhistory.svg" },
-  { href: "/winnerspage", label: "Winner’s List", iconPath: "/iconsvgs/viewall/trophy.svg" },
-  { href: "/promoters", label: "Promoters", iconPath: "/iconsvgs/viewall/promoters.svg" },
-  { href: "/rewards", label: "Rewards", iconPath: "/iconsvgs/viewall/rewards.svg" },
-  { href: "/achievers", label: "Achiever’s", iconPath: "/iconsvgs/viewall/achievers.svg" },
-  { href: "/commision", label: "Commissions", iconPath: "/iconsvgs/viewall/commissions.svg" },
-  { href: "/brochure", label: "Brochure", iconPath: "/iconsvgs/viewall/brochure.svg" },
-
+  { href: "/transactionhistory", label: "Investment History", iconPath: "/iconsvgs/viewall/transactionhistory.svg" },
+  { href: "/winnerspage", label: "Reward Winners", iconPath: "/iconsvgs/viewall/trophy.svg" },
+  { href: "/rewards", label: "Gold & Diamond Rewards", iconPath: "/iconsvgs/viewall/rewards.svg" },
+  { href: "/achievers", label: "Top Investors", iconPath: "/iconsvgs/viewall/achievers.svg" },
 ];
 
 export default function ViewAllPage() {

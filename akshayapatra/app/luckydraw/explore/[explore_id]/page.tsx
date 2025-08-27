@@ -107,7 +107,7 @@ export default function ExplorePage() {
           rewardData = {
             reward_id: decodedExploreId,
             title: `Prize #${position}`,
-            description: "An exciting reward for participating in our lucky draw scheme.",
+            description: "An exciting reward for participating in our gold & diamond investment program.",
             image_url: "/images/reward/reward1.png",
             position: position,
             value: 0
@@ -117,7 +117,7 @@ export default function ExplorePage() {
         const rewardInfo: RewardData = {
           id: rewardData.reward_id,
           title: rewardData.title || `Prize #${rewardData.position}`,
-          description: rewardData.description || "An exciting reward for participating in our lucky draw scheme.",
+          description: rewardData.description || "An exciting reward for participating in our gold & diamond investment program.",
           image: rewardData.image_url || "/images/reward/reward1.png",
           position: rewardData.position,
           value: rewardData.value || 0,
@@ -208,7 +208,7 @@ export default function ExplorePage() {
             <div className="rounded-2xl bg-black/30 border border-white/10 p-6">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Award className="w-5 h-5 text-orange-400" />
-                About This Prize
+                About This Reward
               </h2>
               <p className="text-white/80 leading-relaxed">
                 {reward.description}
@@ -221,11 +221,11 @@ export default function ExplorePage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3 text-white/80">
                   <span className="w-2 h-2 rounded-full bg-orange-400 mt-2 flex-shrink-0" />
-                  <span>Must be an active participant in the scheme</span>
+                  <span>Must be an active participant in the investment program</span>
                 </li>
                 <li className="flex items-start gap-3 text-white/80">
                   <span className="w-2 h-2 rounded-full bg-orange-400 mt-2 flex-shrink-0" />
-                  <span>Payment must be completed before the draw date</span>
+                  <span>Payment must be completed before the reward distribution date</span>
                 </li>
                 <li className="flex items-start gap-3 text-white/80">
                   <span className="w-2 h-2 rounded-full bg-orange-400 mt-2 flex-shrink-0" />
@@ -233,7 +233,7 @@ export default function ExplorePage() {
                 </li>
                 <li className="flex items-start gap-3 text-white/80">
                   <span className="w-2 h-2 rounded-full bg-orange-400 mt-2 flex-shrink-0" />
-                  <span>Prize will be delivered within 30 days of winning</span>
+                  <span>Reward will be delivered within 30 days of winning</span>
                 </li>
               </ul>
             </div>
@@ -243,7 +243,7 @@ export default function ExplorePage() {
           <div className="space-y-6">
             {/* Prize Details */}
             <div className="rounded-2xl bg-black/30 border border-white/10 p-6">
-              <h3 className="text-lg font-semibold mb-4">Prize Details</h3>
+              <h3 className="text-lg font-semibold mb-4">Reward Details</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-white/70">Position</span>
@@ -251,7 +251,7 @@ export default function ExplorePage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-white/70">Type</span>
-                  <span className="font-semibold">Prize</span>
+                  <span className="font-semibold">Reward</span>
                 </div>
                 {reward.value && reward.value > 0 && (
                   <div className="flex items-center justify-between">

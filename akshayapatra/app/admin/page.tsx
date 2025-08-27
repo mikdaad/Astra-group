@@ -88,15 +88,15 @@ function buildMonthlySeries(input: any[] | undefined, monthKey = 'month', valueK
   return MONTHS.map((label, i) => ({ month: label, value: map.get(i) ?? 0 }))
 }
 
-const promoters = [
-  { name: "Munnar", value: 45 },
-  { name: "Kishor", value: 35 },
-  { name: "Gokul", value: 20 },
+const topInvestors = [
+  { name: "Rajesh K.", value: 45 },
+  { name: "Priya S.", value: 35 },
+  { name: "Amit T.", value: 20 },
 ];
 
-const commissionSplit = [
-  { name: "Direct", value: 10_000 },
-  { name: "In‑Direct", value: 19_000 },
+const returnsSplit = [
+  { name: "Gold Returns", value: 10_000 },
+  { name: "Diamond Returns", value: 19_000 },
 ];
 
 // ---------- Colors (kept minimal; tailwind handles most) ----------
@@ -158,9 +158,9 @@ export default function DashboardOverview() {
              {/* Header */}
        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
          <div>
-           <h1 className="text-4xl font-bold tracking-tight text-white font-sans">Dashboard (Overview)</h1>
+           <h1 className="text-4xl font-bold tracking-tight text-white font-sans">Investment Dashboard</h1>
            <p className="mt-1 text-sm text-zinc-300 font-sans">
-             Track and monitor the performance of your leads from all aspects of management.
+             Monitor and manage gold & diamond investment performance across all portfolio aspects.
            </p>
          </div>
         <div className="flex items-center gap-2">
@@ -193,7 +193,7 @@ export default function DashboardOverview() {
         <GlowCard className="xl:col-span-7">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl">Total Users (All Time)</CardTitle>
+              <CardTitle className="text-xl">Total Investors (All Time)</CardTitle>
               <div className="flex items-center gap-2">
                 <Select defaultValue="monthly">
                   <SelectTrigger className="w-[120px] bg-zinc-900 text-white">
@@ -211,7 +211,7 @@ export default function DashboardOverview() {
               </div>
             </div>
             <CardDescription className="mt-2 text-zinc-300">
-              {overview?.total_users ? `${numberIN(overview.total_users)} users total` : '—'}
+              {overview?.total_users ? `${numberIN(overview.total_users)} investors total` : '—'}
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-2">
@@ -244,15 +244,15 @@ export default function DashboardOverview() {
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-3xl font-bold">Quick Support Any</div>
-                <div className="text-3xl font-bold">Problem CRM</div>
+                <div className="text-3xl font-bold">Investment Support</div>
+                <div className="text-3xl font-bold">& Customer Care</div>
               </div>
               <div className="rounded-2xl bg-orange-500/20 p-4">
                 <PhoneCall className="h-10 w-10 text-orange-300" />
               </div>
             </div>
             <div className="mt-6 flex items-center gap-2">
-              <Input placeholder="Enter name, phone number or customer ID" className="bg-zinc-900 text-white placeholder:text-zinc-500" />
+              <Input placeholder="Enter investor name, phone or account ID" className="bg-zinc-900 text-white placeholder:text-zinc-500" />
               <Button className="bg-orange-600 text-white hover:bg-orange-500">
                 <Search className="mr-2 h-4 w-4" /> Search
               </Button>
@@ -263,13 +263,13 @@ export default function DashboardOverview() {
         {/* Income Collected */}
         <GlowCard className="xl:col-span-7">
           <CardHeader className="pb-0">
-            <CardTitle className="text-xl">Total Income Collected</CardTitle>
+            <CardTitle className="text-xl">Total Investment Returns</CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
             <div className="grid grid-cols-2 gap-6">
               <Stat label="Total" value={formatINR(Number(overview?.total_income_collected || 0))} />
               <div className="text-right">
-                <Stat label="Current Month Income" value={formatINR(20_000)} sub="50% increased from last month" />
+                <Stat label="Current Month Returns" value={formatINR(20_000)} sub="50% increased from last month" />
               </div>
             </div>
             <div className="mt-6 h-56 w-full">
@@ -295,7 +295,7 @@ export default function DashboardOverview() {
         <GlowCard className="xl:col-span-3">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base">New User</CardTitle>
+              <CardTitle className="text-base">New Investors</CardTitle>
               <ArrowUpRight className="h-4 w-4 text-orange-400" />
             </div>
           </CardHeader>
@@ -322,7 +322,7 @@ export default function DashboardOverview() {
         <GlowCard className="xl:col-span-4">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base">Active User (Paid)</CardTitle>
+              <CardTitle className="text-base">Active Investors (Paid)</CardTitle>
               <ArrowUpRight className="h-4 w-4 text-orange-400" />
             </div>
           </CardHeader>
@@ -349,17 +349,17 @@ export default function DashboardOverview() {
         <GlowCard className="xl:col-span-3">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base">Total Referral</CardTitle>
+              <CardTitle className="text-base">Investment Rewards</CardTitle>
               <ArrowUpRight className="h-4 w-4 text-orange-400" />
             </div>
           </CardHeader>
           <CardContent className="flex items-center gap-4">
             <div className="flex-1 space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span>Direct</span> <span className="font-medium">80</span>
+                <span>Gold Rewards</span> <span className="font-medium">80</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span>In‑Direct</span> <span className="font-medium">90</span>
+                <span>Diamond Rewards</span> <span className="font-medium">90</span>
               </div>
               <div className="text-xs text-zinc-400">in this month</div>
             </div>
@@ -378,16 +378,16 @@ export default function DashboardOverview() {
         <GlowCard className="xl:col-span-4">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base">Top Promoters</CardTitle>
+              <CardTitle className="text-base">Top Investors</CardTitle>
               <ArrowUpRight className="h-4 w-4 text-orange-400" />
             </div>
           </CardHeader>
           <CardContent className="grid grid-cols-2 items-center gap-2">
             <div>
               <div className="text-4xl font-bold">{formatINR(Number(overview?.total_referral_income || 0))}</div>
-              <div className="text-xs text-zinc-400">Total commission paid</div>
+              <div className="text-xs text-zinc-400">Total returns distributed</div>
               <div className="mt-3 space-y-2 text-sm">
-                {promoters.map((p) => (
+                {topInvestors.map((p) => (
                   <div key={p.name} className="flex items-center justify-between">
                     <span>{p.name}</span>
                     <span className="font-medium">{p.value}%</span>
@@ -398,8 +398,8 @@ export default function DashboardOverview() {
             <div className="h-36 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={promoters} dataKey="value" nameKey="name" innerRadius={45} outerRadius={65} paddingAngle={4}>
-                    {promoters.map((_, i) => (
+                  <Pie data={topInvestors} dataKey="value" nameKey="name" innerRadius={45} outerRadius={65} paddingAngle={4}>
+                    {topInvestors.map((_, i) => (
                       <Cell key={i} fill={[ORANGE[5], ORANGE[3], ORANGE[1]][i]} />
                     ))}
                   </Pie>
@@ -413,18 +413,18 @@ export default function DashboardOverview() {
         <GlowCard className="xl:col-span-4">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base">Total Commission</CardTitle>
+              <CardTitle className="text-base">Investment Returns</CardTitle>
               <ArrowUpRight className="h-4 w-4 text-orange-400" />
             </div>
           </CardHeader>
           <CardContent className="grid grid-cols-2 items-center gap-2">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-sm">
-                <span className="inline-block h-2 w-2 rounded-full bg-orange-500" /> Direct
+                <span className="inline-block h-2 w-2 rounded-full bg-orange-500" /> Gold
               </div>
               <div className="text-2xl font-semibold">{formatINR(10_000)}</div>
               <div className="mt-2 flex items-center gap-2 text-sm">
-                <span className="inline-block h-2 w-2 rounded-full bg-orange-300" /> In‑Direct
+                <span className="inline-block h-2 w-2 rounded-full bg-orange-300" /> Diamond
               </div>
               <div className="text-2xl font-semibold">{formatINR(19_000)}</div>
               <div className="text-xs text-zinc-400">in this month</div>
@@ -432,8 +432,8 @@ export default function DashboardOverview() {
             <div className="h-36 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={commissionSplit} dataKey="value" nameKey="name" innerRadius={45} outerRadius={65} paddingAngle={3}>
-                    {commissionSplit.map((_, i) => (
+                  <Pie data={returnsSplit} dataKey="value" nameKey="name" innerRadius={45} outerRadius={65} paddingAngle={3}>
+                    {returnsSplit.map((_, i) => (
                       <Cell key={i} fill={["#f97316", "#fdba74"][i]} />
                     ))}
                   </Pie>

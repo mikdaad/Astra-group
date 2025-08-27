@@ -3,9 +3,7 @@
 import { motion } from 'framer-motion'
 import { 
   User, 
-  Users, 
   Bell, 
-  Shield, 
   Save,
   X 
 } from 'lucide-react'
@@ -18,90 +16,46 @@ import { useEffect, useState } from 'react'
 
 const mockData = {
   categories: [
-    { icon: User, name: 'General & Profile', active: true },
-    { icon: Users, name: 'User Management', active: false },
+    { icon: User, name: 'Profile & Security', active: true },
     { icon: Bell, name: 'Notifications', active: false },
-    { icon: Shield, name: 'Security & Privacy', active: false }
   ],
   generalSettings: [
     {
-      title: 'Enable Face ID / Fingerprint Login',
-      description: 'Allow biometric login for users',
+      title: 'Enable Biometric Login',
+      description: 'Use Face ID or Fingerprint for secure access',
       enabled: true
     },
     {
-      title: 'Enable Referral System',
-      description: 'Users can enter and share referral codes',
+      title: 'Enable Investment Notifications',
+      description: 'Receive alerts for market changes and portfolio updates',
       enabled: true
     },
     {
-      title: 'Enable Location Access',
-      description: 'Auto-detect user location during sign-up',
-      enabled: false
-    },
-    {
-      title: 'Enable Credential Sharing',
-      description: 'Allow users to share their login credentials',
-      enabled: true
-    },
-    {
-      title: 'Enable Installment Module',
-      description: 'Show EMI status and payment gateway',
-      enabled: true
-    },
-    {
-      title: 'Enable Installment Module',
-      description: 'Show EMI status and payment gateway',
-      enabled: true
-    },
-    {
-      title: 'App Maintenance Mode',
-      description: 'Temporarily block access for all users',
-      enabled: false
-    },
-    {
-      title: 'Show Dashboard Widgets',
-      description: 'Toggle visibility of dashboard sections',
+      title: 'Location Access for Pricing',
+      description: 'Use location for accurate market pricing',
       enabled: false
     }
   ],
   profileSettings: [
     {
-      title: 'Edit User Basic Info',
-      description: 'Can Edit Name, phone, address',
+      title: 'Edit Personal Information',
+      description: 'Update your name, phone, and address',
       enabled: true
     },
     {
-      title: 'View Full KYC Details',
-      description: 'Approve/Reject KYC',
+      title: 'Investment Preferences',
+      description: 'Set your gold vs diamond allocation',
       enabled: true
     },
     {
-      title: 'Add/Edit District & Scheme Details',
-      description: 'District allocation or scheme update',
-      enabled: false
-    },
-    {
-      title: 'Add Alternate Contact Number',
-      description: 'Extra phone number field',
+      title: 'Security Settings',
+      description: 'Manage password and authentication',
       enabled: true
-    },
-    {
-      title: 'Control Username Format',
-      description: 'Auto generate or manual entry',
-      enabled: true
-    },
-    {
-      title: 'Reset User Password',
-      description: 'Force reset for support cases',
-      enabled: false
     }
   ]
 }
 
 export default function SettingsPage() {
-  const [showPassword, setShowPassword] = useState(false)
-
   // Local storage keys
   const STORAGE_KEYS = {
     activeCategory: 'settings.activeCategory',
@@ -187,14 +141,14 @@ export default function SettingsPage() {
       {/* Header */}
       <section>
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-white mb-2">Settings</h1>
-          <p className="text-orange-200">Customize your dashboard experience and optimize system performance.</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Investment Settings</h1>
+          <p className="text-orange-200">Manage your investment platform preferences</p>
         </div>
 
-        {/* User Settings Badge */}
+        {/* Investor Settings Badge */}
         <div className="mb-6">
           <Badge className="bg-orange-500 text-white px-6 py-2 text-sm font-medium rounded-full">
-            User Settings
+            Investor Settings
           </Badge>
         </div>
       </section>
@@ -202,7 +156,7 @@ export default function SettingsPage() {
       {/* Category Navigation */}
       <section>
         <DashboardCard>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {mockData.categories.map((category, index) => (
               <Button
                 key={index}
@@ -223,12 +177,12 @@ export default function SettingsPage() {
       </section>
 
       {/* Settings Content */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section className="grid grid-cols-1 gap-6">
         {/* General Settings */}
         <DashboardCard>
-          <h3 className="text-xl font-bold text-white mb-6">General Settings</h3>
+          <h3 className="text-xl font-bold text-white mb-6">Platform Settings</h3>
           
-          <div className="space-y-4 ">
+          <div className="space-y-4">
             {generalSettings.map((setting, index) => (
               <motion.div
                 key={index}
@@ -262,7 +216,7 @@ export default function SettingsPage() {
 
         {/* Profile Settings */}
         <DashboardCard>
-          <h3 className="text-xl font-bold text-white mb-6">Profile Settings</h3>
+          <h3 className="text-xl font-bold text-white mb-6">Account Settings</h3>
           
           <div className="space-y-4">
             {profileSettings.map((setting, index) => (
@@ -302,8 +256,8 @@ export default function SettingsPage() {
         <DashboardCard gradient={false} className="bg-gray-900 bg-opacity-60">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <div className="text-center sm:text-left">
-              <h4 className="text-lg font-semibold text-white mb-1">Save Settings</h4>
-              <p className="text-orange-200 text-sm">Apply changes to your dashboard configuration</p>
+              <h4 className="text-lg font-semibold text-white mb-1">Save Investment Settings</h4>
+              <p className="text-orange-200 text-sm">Apply changes to your investment preferences</p>
             </div>
             
             <div className="flex space-x-3">
@@ -320,14 +274,14 @@ export default function SettingsPage() {
                 }}
               >
                 <X className="h-4 w-4 mr-2" />
-                Cancel
+                Reset
               </Button>
               <Button
                 className="bg-orange-500 hover:bg-orange-600 text-white px-6"
                 onClick={persistAll}
               >
                 <Save className="h-4 w-4 mr-2" />
-                Save Change
+                Save Settings
               </Button>
             </div>
           </div>

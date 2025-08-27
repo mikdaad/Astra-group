@@ -13,19 +13,13 @@ interface ConditionalLayoutProps {
 export default function ConditionalLayout({ children }: ConditionalLayoutProps) {
   const pathname = usePathname();
   
-  // Check if current route is in the (home) section
-  // Routes in the (home) folder should not show navigation
-  const isHomePage =  
-                     pathname.startsWith('/login') || 
-                     pathname.startsWith('/signup') || 
-                     pathname.startsWith('/profile-setup') ||
-                     pathname.startsWith('/admin/login') ||
-                     pathname.startsWith('/admin/signup');
+  // Always show navigation for public access
+  const showNavigation = true;
 
   return (
     <>
-      {/* Show header and navigation only for non-home pages */}
-      {!isHomePage && (
+      {/* Always show header and navigation for public access */}
+      {showNavigation && (
         <>
           {/* Desktop header and sidebar */}
           <div className="hidden md:block">
@@ -40,13 +34,10 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
         </>
       )}
       
-      {/* Content area with conditional styling */}
-      <div className={isHomePage ? "min-h-screen" : "md:ml-[88px] h-screen flex flex-col"}>
-        {isHomePage ? (
-          // Full screen content for home pages
-          children
-        ) : (
-          // Wrapped content for other pages with proper height constraints
+      {/* Content area with navigation styling */}
+      <div className={showNavigation ? "md:ml-[88px] h-screen flex flex-col" : "min-h-screen"}>
+        {showNavigation ? (
+          // Wrapped content with proper height constraints
           <div className="flex-1 flex flex-col overflow-hidden pt-20 pb-4">
             <div className="flex-1 px-3 sm:px-4 md:px-6 overflow-hidden">
               <div className="lg:rounded-[24px] lg:p-[2px] bg-transparent h-full">
@@ -58,6 +49,9 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
               </div>
             </div>
           </div>
+        ) : (
+          // Full screen content
+          children
         )}
       </div>
     </>

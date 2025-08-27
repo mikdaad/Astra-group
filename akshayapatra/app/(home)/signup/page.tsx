@@ -21,7 +21,7 @@ export default function SignUpPage() {
 
   const handleAuthSuccess = useCallback(() => {
     // wrapper will handle profile-setup redirect
-    router.push('/dashboard')
+    router.push('/')
   }, [router])
 
   return (

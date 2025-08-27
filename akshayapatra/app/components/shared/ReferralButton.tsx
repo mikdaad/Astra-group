@@ -53,8 +53,8 @@ export default function ReferralButton({ variant = 'desktop', className = '' }: 
     if (navigator.share && variant === 'mobile') {
       try {
         await navigator.share({
-          title: 'Join Akshaya Patra',
-          text: 'Join me on Akshaya Patra and get amazing benefits!',
+          title: 'Join Golden Diamond Investment',
+          text: 'Join me on Golden Diamond Investment and get amazing benefits!',
           url: referralLink,
         });
         toast.success('Shared successfully!');
