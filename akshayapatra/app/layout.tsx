@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Golden Diamond Investment",
+  title: "Gold and Diamond Investment",
   description: "Premium gold and diamonds investment platform",
 };
 
