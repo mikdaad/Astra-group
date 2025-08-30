@@ -30,7 +30,7 @@ type RouteItem =
 
 const userRoutes: RouteItem[] = [
   { href: "/", label: "Home", iconSrc: "/iconsvgs/home.svg", iconAlt: "home", iconSize: 24 },
-  { href: "/about", label: "About", iconSrc: "/iconsvgs/viewall/about.svg", iconAlt: "about", iconSize: 24 },
+ 
   { href: "/luckydraw", label: "Gold & Diamond Rewards", iconSrc: "/iconsvgs/luckydraw.svg", iconAlt: "rewards", iconSize: 30 },
   { href: "/transactionhistory", label: "Investment History", iconSrc: "/iconsvgs/transfers.svg", iconAlt: "history" },
   { href: "/support", label: "Support", iconSrc: "/iconsvgs/support.svg", iconAlt: "support", iconSize: 28 },

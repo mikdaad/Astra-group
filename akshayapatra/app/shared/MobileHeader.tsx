@@ -10,9 +10,6 @@ type Item = { href: string; label: string; iconPath: string };
 const menuItems: Item[] = [
   { href: "/about", label: "About", iconPath: "/iconsvgs/viewall/about.svg" },
   { href: "/transactionhistory", label: "Investment History", iconPath: "/iconsvgs/viewall/transactionhistory.svg" },
-  { href: "/winnerspage", label: "Reward Winners", iconPath: "/iconsvgs/viewall/trophy.svg" },
-  { href: "/rewards", label: "Gold & Diamond Rewards", iconPath: "/iconsvgs/viewall/rewards.svg" },
-  { href: "/achievers", label: "Top Investors", iconPath: "/iconsvgs/viewall/achievers.svg" },
   { href: "/privacy-policy", label: "Privacy Policy", iconPath: "/iconsvgs/viewall/privacy.svg" },
   { href: "/settings", label: "Settings", iconPath: "/iconsvgs/viewall/settings.svg" },
 ];

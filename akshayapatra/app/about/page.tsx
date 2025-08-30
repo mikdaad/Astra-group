@@ -110,6 +110,7 @@ export default function AboutPage() {
             </div>
           </motion.div>
 
+
           <motion.div 
             className="mb-16"
             initial={{ opacity: 0, y: 20 }}
