@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import { Car, Bike, ShoppingCart, Download, ChevronRight, ArrowUpRight, TicketPercent } from "lucide-react";
+import { Car, ShoppingCart, Download, ChevronRight, ArrowUpRight, TicketPercent } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 // ---------- Mock Data ----------
@@ -83,10 +84,12 @@ function ExploreCard({ item }: { item: (typeof exploreSchemes)[number] }) {
     <div
       className="relative shrink-0 w-[320px] h-[140px] rounded-2xl overflow-hidden bg-gradient-to-br from-orange-900/60 to-amber-900/60 border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
     >
-      <img
+      <Image
         src={item.image}
         alt={item.subtitle}
-        className="absolute inset-0 w-full h-full object-cover opacity-30"
+        fill
+        className="object-cover opacity-30"
+        sizes="320px"
       />
       <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_0%_0%,rgba(255,255,255,0.06),transparent_60%)]" />
       <div className="relative h-full w-full p-4 flex flex-col justify-between">
@@ -98,14 +101,11 @@ function ExploreCard({ item }: { item: (typeof exploreSchemes)[number] }) {
           {item.cta} <ArrowUpRight className="w-3 h-3" />
         </button>
       </div>
-      <div className="absolute -right-5 -bottom-6 opacity-70">
-        <Car className="w-28 h-28 text-white/10" />
-      </div>
     </div>
   );
 }
 
-// ---------- Swipeable Stack Card ----------
+// ---------- Running Card Component ----------
 function RunningCard({
   data,
   active,
@@ -118,63 +118,72 @@ function RunningCard({
   return (
     <div
       className={classNames(
-        "relative w-[320px] h-[420px] rounded-3xl overflow-hidden",
-        active ? "" : "pointer-events-none"
+        "relative w-[320px] h-[420px] rounded-3xl overflow-hidden cursor-pointer",
+        active ? "z-10" : "pointer-events-none z-10"
       )}
-      style={{ filter: active ? "none" : "blur(2px)" }}
     >
       <div
-        className={classNames(
-          "absolute inset-0 bg-gradient-to-br",
-          data.accent,
-          "" 
-        )}
+        className={classNames("absolute inset-0 ", data.accent)}
+        style={{
+          backgroundImage: "linear-gradient(to bottom, #090300, #351603, #6E2B00, #CA5002)",
+        }}
       />
-      <img
-        src={data.image}
-        alt={data.label}
-        className="absolute inset-0 w-full h-full object-cover opacity-25"
-      />
-      <div className="absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_0%,rgba(255,255,255,0.12),transparent_60%)]" />
-
-      {/* Top icons */}
       <div className="relative z-10 p-4 flex items-center justify-between text-white/80">
-        <span className="inline-flex items-center gap-2 text-sm"><TicketPercent className="w-4 h-4"/> Live Scheme</span>
-        <button className="p-2 rounded-full bg-white/10 hover:bg-white/15"><ShoppingCart className="w-4 h-4"/></button>
+        <span className="inline-flex items-center gap-2 text-sm">
+          <TicketPercent className="w-4 h-4" /> Live Program
+        </span>
+        <button className="p-2 rounded-full bg-white/10 hover:bg-white/15">
+          <ShoppingCart className="w-4 h-4" />
+        </button>
       </div>
 
-      {/* Car visual */}
+      {/* Image: containment + no overflow */}
       <div className="relative z-10 mt-6 flex items-center justify-center">
-        <img
-          src={data.image}
-          alt={data.label}
-          className="w-[240px] h-[140px] object-cover rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
-        />
+        <div className="relative w-[240px] h-[160px] rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] bg-white/5">
+          <Image
+            src={data.image}
+            alt={data.label}
+            fill
+            sizes="240px"
+            className="object-contain"
+            priority={false}
+          />
+        </div>
       </div>
 
-      {/* Info + CTA */}
       <div className="relative z-10 mt-8 px-6">
         <p className="text-white/80 text-sm">{data.month}</p>
         <div className="flex items-end justify-between mt-1">
           <p className="text-white text-2xl font-semibold">₹ {data.price}</p>
-          <div className="flex items-center gap-2 text-white/80 text-xs">
-            <Download className="w-4 h-4"/>
-            Download
+          <div className="flex items-center gap-2 text-white/50 text-xs">
+            <Download className="w-4 h-4" />
+            Receipt after payment
           </div>
         </div>
-        <button
-          onClick={onPay}
-          className="mt-5 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white text-stone-900 font-medium hover:bg-white/90 transition"
-        >
-          Pay Now <ChevronRight className="w-4 h-4"/>
-        </button>
+
+        <div className="hidden lg:block">
+          <button
+            onClick={onPay}
+            className="mt-5 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white text-stone-900 font-medium hover:bg-white/90 transition"
+          >
+            Pay Now <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="block lg:hidden">
+          <button
+            onClick={onPay}
+            className="mt-5 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white text-stone-900 font-medium hover:bg-white/90 transition"
+          >
+            Pay Now <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
 // ---------- Main Page ----------
-export default function programPage() {
+export default function ProgramPage() {
   const [index, setIndex] = React.useState(0);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 0, 200], [-6, 0, 6]);
@@ -282,3 +291,4 @@ export default function programPage() {
     </main>
   );
 }
+
