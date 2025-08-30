@@ -30,7 +30,7 @@ Main loading component with two variants:
 ### Route-Level Loading (`loading.tsx` files):
 - `/dashboard/loading.tsx` - "D A S H B O A R D"
 - `/cards/loading.tsx` - "C A R D S" 
-- `/luckydraw/loading.tsx` - "L U C K Y   D R A W"
+- `/program/loading.tsx` - "P R  "
 - `/admin/loading.tsx` - "A D M I N"
 - `/wallet/loading.tsx` - "W A L L E T"
 - `/transactionhistory/loading.tsx` - "T R A N S A C T I O N S"
@@ -57,7 +57,7 @@ Main loading component with two variants:
 - "C A R D S" text with overlay
 - Loading states for async operations
 
-### 4. LuckyDraw Page (`/app/luckydraw/page.tsx`)
+### 4. program Page (`/app/program/page.tsx`)
 - Initial loading with 2-second delay
 - "L U C K Y   D R A W" text
 - Enhanced loading for card data fetching

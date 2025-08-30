@@ -230,7 +230,7 @@ function ExploreCard({ item }: { item: ExploreScheme }) {
   const router = useRouter();
   
   const handleCardClick = () => {
-    router.push(`/luckydraw/explore/${item.id}`);
+    router.push(`/program/explore/${item.id}`);
   };
 
   const handleButtonClick = (e: React.MouseEvent) => {
@@ -279,7 +279,7 @@ function RunningCard({
   const handleCardClick = () => {
     if (isDraggingRef?.current) return;
     const productId = encodeURIComponent(`${data.schemeId}|${data.periodIndex}`);
-    router.push(`/luckydraw/${productId}`);
+    router.push(`/program/${productId}`);
   };
 
   return (

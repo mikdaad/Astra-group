@@ -18,7 +18,7 @@ export async function GET(req: Request) {
 
     if (!merchantTransactionId) {
       console.error("Callback Error: Invalid transaction ID in URL.");
-      baseRedirectUrl.pathname = "/luckydraw";
+      baseRedirectUrl.pathname = "/program";
       baseRedirectUrl.searchParams.set("payment", "failed");
       baseRedirectUrl.searchParams.set("error", "invalid_txid");
       return NextResponse.redirect(baseRedirectUrl);
@@ -78,7 +78,7 @@ export async function GET(req: Request) {
     // 4. Redirect the user based on the outcome and invoice type
     if (isSuccess && invoiceType) {
         if (invoiceType === 'scheme_payment') {
-            baseRedirectUrl.pathname = "/luckydraw";
+            baseRedirectUrl.pathname = "/program";
             baseRedirectUrl.searchParams.set("payment", "success");
         } else { // Assumes 'registration_fee' or any other type
             baseRedirectUrl.pathname = "/";
@@ -87,7 +87,7 @@ export async function GET(req: Request) {
     } else {
         // Determine failure redirect based on what we know
         if (invoiceType === 'scheme_payment') {
-            baseRedirectUrl.pathname = "/luckydraw";
+            baseRedirectUrl.pathname = "/program";
         } else {
             baseRedirectUrl.pathname = "/";
         }

@@ -20,7 +20,7 @@ type SidebarProps = {
 const DEFAULT_ITEMS: SidebarItem[] = [
   { id: 'home',  label: 'home',  href: '/',           icon: '/icons/home.svg' },
   { id: 'dashboard', label: 'dashboard', href: '/dashboard',  icon: '/icons/dashboard.svg' },
-  { id: 'luckydraw',      label: 'luckydraw',      href: '/luckydraw',icon: '/icons/luckydraw.svg' }
+  { id: 'program',      label: 'program',      href: '/program',icon: '/icons/program.svg' }
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ items = DEFAULT_ITEMS, className }) => {

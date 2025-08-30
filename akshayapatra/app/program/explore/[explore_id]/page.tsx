@@ -280,7 +280,7 @@ export default function ExplorePage() {
                 </div>
               </div>
               <button 
-                onClick={() => router.push('/luckydraw')}
+                onClick={() => router.push('/program')}
                 className="mt-4 w-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200"
               >
                 Participate Now

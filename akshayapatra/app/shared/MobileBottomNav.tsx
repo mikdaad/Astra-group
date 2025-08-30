@@ -23,7 +23,7 @@ const IconImg: React.FC<{ src: string; alt: string; active?: boolean; size?: num
 
 const items = [
   { href: "/", label: "Home", imgSrc: "/iconsvgs/home.svg", size: 24 },
-  { href: "/luckydraw", label: "Rewards", imgSrc: "/iconsvgs/lucky.svg", size: 28 },
+  { href: "/program", label: "Rewards", imgSrc: "/iconsvgs/lucky.svg", size: 28 },
   { href: "/profile", label: "Profile", imgSrc: "/iconsvgs/profile.svg", size: 24 },
 ];
 

@@ -175,8 +175,8 @@ export async function GET(
 
     if (isSuccess && invoiceType) {
       if (invoiceType === "scheme_payment") {
-        console.log("Redirecting to luckydraw for scheme payment success");
-        baseRedirectUrl.pathname = "/luckydraw";
+        console.log("Redirecting to program for scheme payment success");
+        baseRedirectUrl.pathname = "/program";
       } else {
         console.log("Redirecting to home for regular payment success");
         baseRedirectUrl.pathname = "/";
@@ -184,7 +184,7 @@ export async function GET(
       baseRedirectUrl.searchParams.set("payment", "success");
     } else {
       console.log("Redirecting for failed payment or missing invoice type");
-      baseRedirectUrl.pathname = invoiceType === "scheme_payment" ? "/luckydraw" : "/";
+      baseRedirectUrl.pathname = invoiceType === "scheme_payment" ? "/program" : "/";
       baseRedirectUrl.searchParams.set("payment", "failed");
     }
 

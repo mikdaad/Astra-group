@@ -174,7 +174,7 @@ function RunningCard({
 }
 
 // ---------- Main Page ----------
-export default function LuckyDrawPage() {
+export default function programPage() {
   const [index, setIndex] = React.useState(0);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 0, 200], [-6, 0, 6]);
@@ -235,7 +235,7 @@ export default function LuckyDrawPage() {
                 <RunningCard
                   data={runningSchemes[index]}
                   active
-                  onPay={() => router.push(`/luckydraw/${runningSchemes[index].id}`)}
+                  onPay={() => router.push(`/program/${runningSchemes[index].id}`)}
                 />
               </motion.div>
             </AnimatePresence>
