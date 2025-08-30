@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { ShoppingCart, Download, ChevronRight, ArrowUpRight, TicketPercent, Loader2 } from "lucide-react";
 import { createClient as createSupabaseClient } from "@/utils/supabase/client";
-import { getSchemePeriods, getSchemeTopRewards } from "@/app/lib/rpc";
+import { getSchemePeriods, getSchemeTopRewards, listSchemesPublic, type SchemeSummary } from "@/app/lib/rpc";
 import { PageLoaderOverlay } from "@/app/components/general/PageLoader";
 
-// --- START: Finalized Types ---
+// --- START: Updated Types ---
 type SchemeInfo = {
   id: string;
   name: string;
@@ -17,14 +17,6 @@ type SchemeInfo = {
   scheme_type: string;
   subscription_cycle: string;
   status: string;
-};
-
-// The 'scheme' property can be null if the foreign key is broken.
-type CardType = {
-  id: string; // This is the card ID
-  scheme: SchemeInfo | null;
-  scheme_id: string;
-  total_payments_made: number; 
 };
 
 type ExploreScheme = {
@@ -45,7 +37,6 @@ type RunningScheme = {
   periodIndex: number;
   periodStart: string; // ISO string for the period start (calendar alignment)
   schemeId: string;
-  cardId: string;
   paid: boolean; 
   isPastUnpaid: boolean; // for the "eligible" note
 };
@@ -56,7 +47,6 @@ type PaymentReceipt = {
   schemeName: string;
   month: string;
   periodIndex: number;
-  cardId: string;
   schemeId: string;
   timestamp: string;
   userName: string;
@@ -64,7 +54,7 @@ type PaymentReceipt = {
   paymentMethod: string;
   status: string;
 };
-// --- END: Finalized Types ---
+// --- END: Updated Types ---
 
 // Utils
 function classNames(...classes: (string | false | null | undefined)[]) { return classes.filter(Boolean).join(" "); }
@@ -187,7 +177,7 @@ function PaymentSuccessPopup({ receipt, onClose, onPrintReceipt }: { receipt: Pa
                 <ReceiptRow label="Investment Plan" value={receipt.schemeName} />
                 <ReceiptRow label="Month" value={receipt.month} />
                 <ReceiptRow label="Period Index" value={String(receipt.periodIndex)} />
-                <ReceiptRow label="Card ID" value={receipt.cardId} />
+                <ReceiptRow label="Scheme ID" value={receipt.schemeId} />
                 <ReceiptRow label="Phone" value={receipt.userPhone} />
                 <ReceiptRow label="Payment Method" value={receipt.paymentMethod} />
                 <ReceiptRow label="Status" value={receipt.status} />
@@ -288,7 +278,7 @@ function RunningCard({
 
   const handleCardClick = () => {
     if (isDraggingRef?.current) return;
-    const productId = encodeURIComponent(`${data.cardId}|${data.schemeId}|${data.periodIndex}`);
+    const productId = encodeURIComponent(`${data.schemeId}|${data.periodIndex}`);
     router.push(`/luckydraw/${productId}`);
   };
 
@@ -558,14 +548,14 @@ export default function Page() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [userCards, setUserCards] = useState<CardType[]>([]);
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const [schemes, setSchemes] = useState<SchemeSummary[]>([]);
+  const [selectedSchemeId, setSelectedSchemeId] = useState<string | null>(null);
   const [exploreSchemes, setExploreSchemes] = useState<ExploreScheme[]>([]);
   const [runningSchemes, setRunningSchemes] = useState<RunningScheme[]>([]);
   const [paymentReceipt, setPaymentReceipt] = useState<PaymentReceipt | null>(null);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   
-  const selectedCard = useMemo(() => userCards.find(c => c.id === selectedCardId), [userCards, selectedCardId]);
+  const selectedScheme = useMemo(() => schemes.find(s => s.id === selectedSchemeId), [schemes, selectedSchemeId]);
 
   // Data loading functions
   async function loadExploreSchemes(schemeId: string) {
@@ -585,34 +575,32 @@ export default function Page() {
     }
   }
 
-  async function loadRunningSchemes(card: CardType) {
-    if (!card.scheme) return;
+  async function loadRunningSchemes(scheme: SchemeSummary) {
+    if (!scheme) return;
     try {
-      console.log("card", card);
-      const periods = await getSchemePeriods(card.scheme_id, supabase);
+      console.log("scheme", scheme);
+      const periods = await getSchemePeriods(scheme.id, supabase);
       console.log("periods", periods);
       const now = new Date();
-      const totalPaid = card.total_payments_made || 0;
-      console.log("totalPaid", totalPaid);
 
       const runningData: RunningScheme[] = periods.slice(0, periods.length).map((period: any, idx: number) => {
         const periodStartDate = new Date(period.period_start);
-        const paid = period.period_index <= totalPaid;
+        // Since we're not tracking user payments, all periods are unpaid
+        const paid = false;
         const isPastUnpaid = !paid && periodStartDate <= now;
 
         return {
-          id: `${card.id}-${period.period_index}`,
+          id: `${scheme.id}-${period.period_index}`,
           month: periodStartDate.toLocaleDateString("en-US", { month: "long" }),
-          price: card.scheme!.subscription_amount,
+          price: scheme.subscription_amount,
           image:
             period.cover_image_url ||
             "https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1200&auto=format&fit=crop",
-          label: card.scheme!.name,
+          label: scheme.name,
           accent: `from-orange-${500 + idx * 100}/60 to-amber-${600 + idx * 100}/60`,
           periodIndex: period.period_index,
           periodStart: period.period_start,
-          schemeId: card.scheme_id,
-          cardId: card.id,
+          schemeId: scheme.id,
           paid,
           isPastUnpaid,
         };
@@ -626,21 +614,18 @@ export default function Page() {
     }
   }
 
-  // Effect to fetch the user's cards initially
+  // Effect to fetch schemes initially
   useEffect(() => {
-    const loadUserCards = async () => {
+    const loadSchemes = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const res = await fetch("/api/cards");
-        const json = await res.json();
-        if (!res.ok || !json.success) {
-          throw new Error(json.message || "Failed to fetch user schemes.");
-        }
-        const cardsData: CardType[] = json.cards;
-        setUserCards(cardsData);
-        if (cardsData.length > 0) {
-          setSelectedCardId(cardsData[0].id);
+        const schemesData = await listSchemesPublic(supabase);
+        // Filter out Reg_Fee scheme
+        const filteredSchemes = schemesData.filter(scheme => scheme.name !== "Reg_Fee");
+        setSchemes(filteredSchemes);
+        if (filteredSchemes.length > 0) {
+          setSelectedSchemeId(filteredSchemes[0].id);
         }
       } catch (err: any) {
         setError(err.message);
@@ -652,27 +637,27 @@ export default function Page() {
         }, 2000);
       }
     };
-    void loadUserCards();
+    void loadSchemes();
   }, []);
   
   // Effect to load scheme data when the selected card changes
   useEffect(() => {
-    if (!selectedCard) {
+    if (!selectedScheme) {
       setExploreSchemes([]);
       setRunningSchemes([]);
       return;
     }
     
-    const loadDataForSelectedCard = async () => {
+    const loadDataForSelectedScheme = async () => {
       setIsLoading(true);
       await Promise.all([
-        loadExploreSchemes(selectedCard.scheme_id),
-        loadRunningSchemes(selectedCard),
+        loadExploreSchemes(selectedScheme.id),
+        loadRunningSchemes(selectedScheme),
       ]);
       setIsLoading(false);
     };
-    void loadDataForSelectedCard();
-  }, [selectedCard]);
+    void loadDataForSelectedScheme();
+  }, [selectedScheme]);
 
   // Index: start from the current calendar month period
   useEffect(() => {
@@ -714,7 +699,6 @@ export default function Page() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          cardId: scheme.cardId,
           schemeId: scheme.schemeId,
           periodIndex: scheme.periodIndex,
           amount: scheme.price,
@@ -729,11 +713,10 @@ export default function Page() {
       
       // Store payment context for success callback
       localStorage.setItem('pendingPayment', JSON.stringify({
-        cardId: scheme.cardId,
         schemeId: scheme.schemeId,
         periodIndex: scheme.periodIndex,
         amount: scheme.price,
-        schemeName: selectedCard?.scheme?.name || "Scheme",
+        schemeName: selectedScheme?.name || "Scheme",
         month: scheme.month,
         userName: userName || "User",
         userPhone: userPhone || ""
@@ -833,7 +816,6 @@ useEffect(() => {
             schemeName: paymentData.schemeName,
             month: paymentData.month,
             periodIndex: paymentData.periodIndex,
-            cardId: paymentData.cardId,
             schemeId: paymentData.schemeId,
             timestamp: new Date().toISOString(),
             userName: paymentData.userName || "User",
@@ -855,8 +837,8 @@ useEffect(() => {
             
           // Refresh schemes to show updated payment status
           setTimeout(() => {
-            if (selectedCard) {
-              loadRunningSchemes(selectedCard);
+            if (selectedScheme) {
+              loadRunningSchemes(selectedScheme);
             }
           }, 1000);
             
@@ -874,8 +856,8 @@ useEffect(() => {
         window.history.replaceState({}, document.title, newUrl);
           
         // Refresh schemes in case payment status changed
-        if (selectedCard) {
-          loadRunningSchemes(selectedCard);
+        if (selectedScheme) {
+          loadRunningSchemes(selectedScheme);
         }
       }
     } else if (paymentStatus === 'failed') {
@@ -893,7 +875,7 @@ useEffect(() => {
     
   // Check on mount
   checkPaymentCallback();
-}, [selectedCard]);
+}, [selectedScheme]);
 
 async function handlePrintReceipt(receipt: PaymentReceipt) {
   const { jsPDF } = await import("jspdf");
@@ -923,7 +905,6 @@ async function handlePrintReceipt(receipt: PaymentReceipt) {
   line("Period Index", String(receipt.periodIndex));
   line("Payment Method", receipt.paymentMethod);
   line("Status", receipt.status);
-  line("Card ID", receipt.cardId);
   line("Scheme ID", receipt.schemeId);
   line("Date & Time", new Date(receipt.timestamp).toLocaleString());
 
@@ -944,7 +925,7 @@ async function handleDownloadReceipt(s: RunningScheme) {
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF();
 
-  const schemeName = selectedCard?.scheme?.name || "Scheme";
+  const schemeName = selectedScheme?.name || "Scheme";
   const monthLabel = new Date(s.periodStart).toLocaleDateString("en-IN", {
     month: "long",
     year: "numeric",
@@ -971,8 +952,7 @@ async function handleDownloadReceipt(s: RunningScheme) {
   line("Month", monthLabel);
   line("Period Index", String(s.periodIndex));
   line("Amount", `Rs.${s.price.toFixed(2)}`);
-  line("Card ID", s.cardId);
-  line("Plan ID", s.schemeId);
+  line("Scheme ID", s.schemeId);
   line("Generated On", new Date().toLocaleString());
 
   // Footer/border
@@ -1016,21 +996,21 @@ async function handleDownloadReceipt(s: RunningScheme) {
         <h1 className="text-xl font-semibold">Gold & Diamond Investment Portal</h1>
 
         {/* Card Selector Dropdown */}
-        {userCards.length > 0 && (
+        {schemes.length > 0 && (
           <div className="mt-4">
-            <label htmlFor="card-select" className="block text-sm font-medium text-white/70">
+            <label htmlFor="scheme-select" className="block text-sm font-medium text-white/70">
               Select Your Investment Plan
             </label>
             <select
-              id="card-select"
-              name="card"
-              value={selectedCardId || ""}
-              onChange={(e) => setSelectedCardId(e.target.value)}
+              id="scheme-select"
+              name="scheme"
+              value={selectedSchemeId || ""}
+              onChange={(e) => setSelectedSchemeId(e.target.value)}
               className="mt-1 block w-full max-w-xs rounded-md border-white/20 bg-white/5 py-2 pl-3 pr-10 text-base focus:border-orange-500 focus:outline-none focus:ring-orange-500 sm:text-sm"
             >
-              {userCards.map((card) => (
-                <option key={card.id} value={card.id}>
-                  {card.scheme ? card.scheme.name : "Investment Plan Not Available"}
+              {schemes.map((scheme) => (
+                <option key={scheme.id} value={scheme.id}>
+                  {scheme.name}
                 </option>
               ))}
             </select>
@@ -1049,14 +1029,14 @@ async function handleDownloadReceipt(s: RunningScheme) {
           <p>{error}</p>
         </div>
       )}
-      {!isLoading && !error && userCards.length === 0 && (
+      {!isLoading && !error && schemes.length === 0 && (
         <div className="mx-auto max-w-6xl px-5 text-center text-white/70">
-          <p>You are not enrolled in any investment plans yet.</p>
+          <p>No investment plans available yet.</p>
         </div>
       )}
 
       {/* Main Content */}
-      {!isLoading && !error && selectedCard && (
+      {!isLoading && !error && selectedScheme && (
         <>
           <div className="mx-auto max-w-6xl px-5 mt-4">
             <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
